@@ -23,7 +23,7 @@ export default function ResumeWebsite() {
   };
 
   // Enhanced terminal-style section wrapper
-  const TerminalWindow = ({ title, children }) => (
+  const TerminalWindow: React.FC<{ title: string, children: React.ReactNode }> = ({ title, children }) => (
     <div className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500">
       <div className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
         <div className="flex space-x-2 mr-4">
