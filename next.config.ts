@@ -1,10 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
   },
   basePath: '/resume',
-}
+};
 
-module.exports = nextConfig
+export default nextConfig;
