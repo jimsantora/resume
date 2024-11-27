@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Terminal, Code2, Database, Cloud } from 'lucide-react';
-import { useAchievements, AchievementNotification, AchievementsList } from './achievements';
+import { Terminal, Code2, Database, Cloud } from 'lucide-react';
+import { useAchievements, AchievementNotification } from './achievements';
 import { useScrollTrigger } from './useScrollTrigger';
+import NavBar from './NavBar';
 
 export default function ResumeWebsite() {
   const [theme, setTheme] = useState('dark');
@@ -9,7 +10,13 @@ export default function ResumeWebsite() {
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('hero');
-  const { unlockedAchievements, currentNotification, unlockAchievement, totalPoints } = useAchievements();
+  const { 
+    unlockedAchievements, 
+    currentNotification, 
+    unlockAchievement, 
+    achievements, 
+    totalPoints 
+  } = useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -31,7 +38,6 @@ export default function ResumeWebsite() {
     children: React.ReactNode, 
     sectionId: string 
   }> = ({ title, children, sectionId }) => {
-    // Create ref for scroll tracking
     const sectionRef = useScrollTrigger(sectionId, unlockAchievement);
 
     return (
@@ -60,26 +66,17 @@ export default function ResumeWebsite() {
         ? 'bg-gray-900 text-green-400' 
         : 'bg-gray-100 text-gray-800'
     }`}>
+      <NavBar 
+        theme={theme}
+        toggleTheme={toggleTheme}
+        unlockedAchievements={unlockedAchievements}
+        achievements={achievements}
+        totalPoints={totalPoints}
+      />
 
       <AchievementNotification achievement={currentNotification} theme={theme} />
-      <AchievementsList unlockedAchievements={unlockedAchievements} theme={theme} totalPoints={totalPoints} />
 
-      <div className="fixed top-4 right-4 flex items-center space-x-4">
-        <span className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-gray-600'}`}>
-          [system@jsantora ~]$
-        </span>
-        <button 
-          onClick={toggleTheme}
-          className="p-2 rounded-full hover:bg-opacity-20 hover:bg-gray-500"
-        >
-          {theme === 'dark' ? 
-            <Sun className="w-6 h-6" /> : 
-            <Moon className="w-6 h-6" />
-          }
-        </button>
-      </div>
-
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 pt-24">
         <TerminalWindow title="~ intro.sh" sectionId="intro">
           <div className="mb-8 h-12">
             <span className="text-3xl font-bold">

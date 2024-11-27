@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Terminal, Code2, Gamepad2, Brain } from 'lucide-react';
 
-type Achievement = {
+export type Achievement = {
   id: string;
   title: string;
   description: string;
