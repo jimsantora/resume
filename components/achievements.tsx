@@ -87,7 +87,38 @@ export const AchievementNotification: React.FC<{
   achievement: Achievement | null;
   theme: string;
 }> = ({ achievement, theme }) => {
-  // ... same as before
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (achievement) {
+      setIsVisible(true);
+      const timer = setTimeout(() => setIsVisible(false), 2700);
+      return () => clearTimeout(timer);
+    }
+  }, [achievement]);
+
+  if (!achievement) return null;
+
+  return (
+    <div className={`fixed top-20 right-4 transform transition-all duration-500 ${
+      isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+    }`}>
+      <div className={`p-4 rounded-lg shadow-lg border-2 border-orange-500 flex items-start gap-3 max-w-sm ${
+        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+      }`}>
+        <div className="flex-shrink-0">
+          <Trophy className="w-6 h-6 text-yellow-500" />
+        </div>
+        <div>
+          <h3 className="font-bold text-orange-500">{achievement.title}</h3>
+          <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+            {achievement.description}
+          </p>
+          <p className="text-xs text-yellow-500 mt-1">+{achievement.points} XP</p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 // Updated achievements list to show total points

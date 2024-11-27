@@ -9,7 +9,7 @@ export default function ResumeWebsite() {
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('hero');
-  const { unlockedAchievements, currentNotification, unlockAchievement } = useAchievements();
+  const { unlockedAchievements, currentNotification, unlockAchievement, totalPoints } = useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -62,7 +62,7 @@ export default function ResumeWebsite() {
     }`}>
 
       <AchievementNotification achievement={currentNotification} theme={theme} />
-      <AchievementsList unlockedAchievements={unlockedAchievements} theme={theme} />
+      <AchievementsList unlockedAchievements={unlockedAchievements} theme={theme} totalPoints={totalPoints} />
 
       <div className="fixed top-4 right-4 flex items-center space-x-4">
         <span className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-gray-600'}`}>
