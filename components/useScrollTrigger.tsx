@@ -7,6 +7,7 @@ export const useScrollTrigger = (
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = sectionRef.current; // Store ref in a variable
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -23,14 +24,14 @@ export const useScrollTrigger = (
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     // Cleanup observer on component unmount
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [sectionId, onTrigger]);
