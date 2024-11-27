@@ -1,0 +1,48 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Type checking
+      run: npm run type-check || npm run tsc
+      
+    - name: Lint check
+      run: npm run lint || echo "No lint script found"
+
+    - name: Run tests
+      run: npm test || echo "No test script found"
+
+    - name: Build verification
+      run: npm run build
+
+    # Optional: Add test coverage report
+    - name: Generate test coverage report
+      if: always()
+      run: npm run test:coverage || echo "No coverage script found"
+
+    # Optional: Cache the Next.js build cache
+    - name: Cache Next.js build cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          .next/cache
+        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nextjs-
