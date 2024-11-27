@@ -36,8 +36,8 @@ jobs:
           ${{ runner.os }}-nextjs-
 
     - name: Type checking
-      run: npm run type-check || npm run tsc
-      
+      run: npm run type-check 
+
     - name: Lint check
       run: |
         if [ -f ".eslintrc.js" ]; then
