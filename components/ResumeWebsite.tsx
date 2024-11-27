@@ -9,6 +9,8 @@ export default function ResumeWebsite() {
   const [typedText, setTypedText] = useState('');
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSection, setCurrentSection] = useState('default');
+
   const { 
     unlockedAchievements, 
     currentNotification, 
@@ -37,8 +39,13 @@ export default function ResumeWebsite() {
     children: React.ReactNode, 
     sectionId: string 
   }> = ({ title, children, sectionId }) => {
-    const sectionRef = useScrollTrigger(sectionId, unlockAchievement);
-
+    const handleSectionChange = (sectionId: string) => {
+      setCurrentSection(sectionId);
+      unlockAchievement(sectionId);
+    };
+    
+    const sectionRef = useScrollTrigger(sectionId, handleSectionChange);
+        
     return (
       <div 
         ref={sectionRef} 
@@ -71,6 +78,7 @@ export default function ResumeWebsite() {
         unlockedAchievements={unlockedAchievements}
         achievements={achievements}
         totalPoints={totalPoints}
+        currentSection={currentSection}
       />
 
       <AchievementNotification achievement={currentNotification} theme={theme} />
