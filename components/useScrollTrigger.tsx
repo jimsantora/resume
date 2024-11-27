@@ -19,8 +19,10 @@ export const useScrollTrigger = (
         });
       },
       {
-        // Element is considered visible when 50% of it is in view
-        threshold: 0.5,
+        // Element is considered visible when 20% of it is in view
+        threshold: 0.2,
+        // Add root margin to trigger slightly before the element comes into view
+        rootMargin: '50px 0px'
       }
     );
 
