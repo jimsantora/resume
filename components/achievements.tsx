@@ -100,13 +100,17 @@ export const AchievementNotification: React.FC<{
   if (!achievement) return null;
 
   return (
-    <div className={`fixed top-20 right-4 transform transition-all duration-500 ${
-      isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-    }`}>
-      <div className={`p-4 rounded-lg shadow-lg border-2 border-orange-500 flex items-start gap-3 max-w-sm ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-      }`}>
-        <div className="flex-shrink-0">
+    <div
+      className={`fixed bottom-4 right-4 transform transition-all duration-500 ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
+      }`}
+    >
+      <div
+        className={`p-4 rounded-lg shadow-lg border-2 border-orange-500 flex items-start gap-3 max-w-sm ${
+          theme === 'dark' ? 'bg-gray-800 shadow-orange-500/20' : 'bg-white shadow-orange-500/10'
+        }`}
+      >
+        <div className="flex-shrink-0 mt-1">
           <Trophy className="w-6 h-6 text-yellow-500" />
         </div>
         <div>
