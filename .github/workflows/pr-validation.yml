@@ -24,10 +24,20 @@ jobs:
       run: npm run type-check || npm run tsc
       
     - name: Lint check
-      run: npm run lint || echo "No lint script found"
+      run: |
+        if [ -f ".eslintrc.js" ]; then
+          npm run lint
+        else
+          echo "No ESLint configuration found"
+        fi
 
     - name: Run tests
-      run: npm test || echo "No test script found"
+      run: |
+        if [ -f "jest.config.js" ]; then
+          npm test
+        else
+          echo "No Jest configuration found"
+        fi
 
     - name: Build verification
       run: npm run build
