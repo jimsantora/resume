@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Code2, Database, Cloud } from 'lucide-react';
 import { useAchievements, AchievementNotification } from './achievements';
-import { useScrollTrigger } from './useScrollTrigger';
+import { useScrollTrigger } from '../lib/hooks/useScrollTrigger';
 import NavBar from './NavBar';
 
 export default function ResumeWebsite() {
