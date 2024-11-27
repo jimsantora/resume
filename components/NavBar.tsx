@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sun, Moon, Trophy } from 'lucide-react';
 import { Achievement } from './achievements';
+import ShellPrompt from './ShellPrompt';
 
 interface NavBarProps {
   theme: string;
@@ -8,6 +9,7 @@ interface NavBarProps {
   unlockedAchievements: string[];
   achievements: Achievement[];
   totalPoints: number;
+  currentSection?: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ 
@@ -15,7 +17,8 @@ const NavBar: React.FC<NavBarProps> = ({
   toggleTheme, 
   unlockedAchievements, 
   achievements,
-  totalPoints 
+  totalPoints,
+  currentSection = 'default'
 }) => {
   const [showAchievements, setShowAchievements] = useState(false);
 
@@ -26,12 +29,21 @@ const NavBar: React.FC<NavBarProps> = ({
       theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
     }`}>
       <div className="container mx-auto px-4">
-        <div className="h-16 flex items-center justify-between">
-          <span className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-gray-600'}`}>
-            [system@jsantora ~]$
-          </span>
-          
-          <div className="flex items-center space-x-4">
+        <div className="h-16 grid grid-cols-3 items-center">
+          {/* Left section - Shell Prompt */}
+          <div className="justify-self-start min-w-[200px]">
+            <ShellPrompt 
+              theme={theme}
+              currentSection={currentSection}
+            />
+          </div>
+
+          {/* Center section - empty for now */}
+          <div className="justify-self-center">
+          </div>
+
+          {/* Right section - controls */}
+          <div className="justify-self-end flex items-center space-x-4">
             <button
               onClick={() => setShowAchievements(!showAchievements)}
               className={`p-2 rounded-full hover:bg-opacity-20 hover:bg-gray-500 relative ${
