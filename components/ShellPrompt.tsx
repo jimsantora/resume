@@ -21,11 +21,11 @@ const LOTR_HOSTS = [
 
 const getDirectoryFromSection = (section: string) => {
   const dirMap: { [key: string]: string } = {
-    'default': '/root',
-    'intro': '/root/about',
-    'skills': '/root/skills',
-    'experience': '/root/career',
-    'game-credits': '/root/games'
+    'default': '/home/jsantora',
+    'intro': '/home/jsantora/about',
+    'skills': '/home/jsantora/skills',
+    'experience': '/home/jsantora/career',
+    'game-credits': '/home/jsantora/games'
   };
   return dirMap[section] || dirMap.default;
 };
@@ -37,11 +37,10 @@ export const ShellPrompt: React.FC<{
   theme = 'dark',
   currentSection = 'default'
 }) => {
-  const [hostname, setHostname] = useState(LOTR_HOSTS[0]); // Default to first host
+  const [hostname, setHostname] = useState(LOTR_HOSTS[0]);
   const currentDir = getDirectoryFromSection(currentSection);
   
   useEffect(() => {
-    // Only run in browser environment
     if (typeof window !== 'undefined') {
       const storedSeed = sessionStorage.getItem('lotr-host-seed');
       if (!storedSeed) {
@@ -53,18 +52,18 @@ export const ShellPrompt: React.FC<{
         setHostname(LOTR_HOSTS[seed % LOTR_HOSTS.length]);
       }
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   return (
     <div className="font-mono flex items-center gap-2 transition-all duration-300">
-      <Terminal className="w-4 h-4 text-red-500" />
-      <span className={`${theme === 'dark' ? 'text-red-400' : 'text-red-600'}`}>
-        <span className="text-red-500">root</span>
+      <Terminal className="w-4 h-4 text-orange-500" />
+      <span className={theme === 'dark' ? 'text-green-400' : 'text-gray-600'}>
+        <span className="text-orange-500">root</span>
         <span className="text-gray-500">@</span>
-        <span className="text-purple-500">{hostname}</span>
+        <span className="text-green-500">{hostname}</span>
         <span className="text-gray-500">:</span>
-        <span className="text-yellow-500">{currentDir}</span>
-        <span className="text-red-500"># </span>
+        <span className="text-orange-500">{currentDir}</span>
+        <span className="text-green-500"># </span>
         <span className="animate-pulse">▊</span>
       </span>
     </div>
