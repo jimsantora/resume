@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Terminal } from 'lucide-react';
 
 const LOTR_HOSTS = [
@@ -19,17 +19,6 @@ const LOTR_HOSTS = [
   'treebeard'   // Eldest of the Ents
 ];
 
-const getRandomHost = () => {
-  // Use current timestamp as seed for consistent selection during session
-  const seed = parseInt(sessionStorage.getItem('lotr-host-seed') || '0');
-  if (seed === 0) {
-    const newSeed = Date.now();
-    sessionStorage.setItem('lotr-host-seed', newSeed.toString());
-    return LOTR_HOSTS[newSeed % LOTR_HOSTS.length];
-  }
-  return LOTR_HOSTS[seed % LOTR_HOSTS.length];
-};
-
 const getDirectoryFromSection = (section: string) => {
   const dirMap: { [key: string]: string } = {
     'default': '/root',
@@ -48,9 +37,24 @@ export const ShellPrompt: React.FC<{
   theme = 'dark',
   currentSection = 'default'
 }) => {
-  const [hostname] = React.useState(() => getRandomHost());
+  const [hostname, setHostname] = useState(LOTR_HOSTS[0]); // Default to first host
   const currentDir = getDirectoryFromSection(currentSection);
   
+  useEffect(() => {
+    // Only run in browser environment
+    if (typeof window !== 'undefined') {
+      const storedSeed = sessionStorage.getItem('lotr-host-seed');
+      if (!storedSeed) {
+        const newSeed = Date.now();
+        sessionStorage.setItem('lotr-host-seed', newSeed.toString());
+        setHostname(LOTR_HOSTS[newSeed % LOTR_HOSTS.length]);
+      } else {
+        const seed = parseInt(storedSeed);
+        setHostname(LOTR_HOSTS[seed % LOTR_HOSTS.length]);
+      }
+    }
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <div className="font-mono flex items-center gap-2 transition-all duration-300">
       <Terminal className="w-4 h-4 text-red-500" />
