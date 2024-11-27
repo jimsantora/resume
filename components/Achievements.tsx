@@ -10,7 +10,6 @@ export type Achievement = {
   icon?: React.ReactNode;
 };
 
-// Updated achievements to match terminal sections
 const achievements: Achievement[] = [
   {
     id: 'bio-unlocked',
@@ -46,7 +45,6 @@ const achievements: Achievement[] = [
   }
 ];
 
-// Map terminal sections to achievements
 const sectionAchievements: { [key: string]: string } = {
   'intro': 'bio-unlocked',
   'skills': 'skills-unlocked',
@@ -54,22 +52,51 @@ const sectionAchievements: { [key: string]: string } = {
   'game-credits': 'games-unlocked'
 };
 
-// Rest of the code remains the same
+const STORAGE_KEY = 'resume-achievements';
+
 export const useAchievements = () => {
-  const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
+  // Initialize state from sessionStorage
+  const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  });
   const [currentNotification, setCurrentNotification] = useState<Achievement | null>(null);
-  const [totalPoints, setTotalPoints] = useState<number>(0);
+  const [totalPoints, setTotalPoints] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0;
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (!stored) return 0;
+    const unlocked = JSON.parse(stored);
+    return unlocked.reduce((total: number, id: string) => {
+      const achievement = achievements.find(a => a.id === id);
+      return total + (achievement?.points || 0);
+    }, 0);
+  });
+
+  // Update sessionStorage when achievements change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(unlockedAchievements));
+    }
+  }, [unlockedAchievements]);
 
   const unlockAchievement = (sectionId: string) => {
     const achievementId = sectionAchievements[sectionId];
-    if (achievementId && !unlockedAchievements.includes(achievementId)) {
-      const achievement = achievements.find(a => a.id === achievementId);
-      if (achievement) {
-        setUnlockedAchievements(prev => [...prev, achievementId]);
-        setCurrentNotification(achievement);
-        setTotalPoints(prev => prev + (achievement.points || 0));
-        setTimeout(() => setCurrentNotification(null), 3000);
-      }
+    if (!achievementId) return;
+
+    // Don't proceed if already unlocked
+    if (unlockedAchievements.includes(achievementId)) return;
+
+    const achievement = achievements.find(a => a.id === achievementId);
+    if (achievement) {
+      setUnlockedAchievements(prev => {
+        // Double check we haven't already added this
+        if (prev.includes(achievementId)) return prev;
+        return [...prev, achievementId];
+      });
+      setCurrentNotification(achievement);
+      setTotalPoints(prev => prev + (achievement.points || 0));
+      setTimeout(() => setCurrentNotification(null), 3000);
     }
   };
 
@@ -133,9 +160,11 @@ export const AchievementsList: React.FC<{
 }> = ({ unlockedAchievements, theme, totalPoints }) => {
   return (
     <div className="fixed left-4 top-20 max-w-xs">
-      <div className={`p-4 rounded-lg shadow-lg border-2 border-orange-500 ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-      }`}>
+      <div
+        className={`p-4 rounded-lg shadow-lg border-2 border-orange-500 ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}
+      >
         <h3 className="text-orange-500 font-bold mb-3 flex items-center gap-2">
           <Trophy className="w-5 h-5" />
           Achievements ({unlockedAchievements.length}/{achievements.length})
@@ -147,25 +176,23 @@ export const AchievementsList: React.FC<{
             return (
               <div
                 key={achievement.id}
-                className={`p-2 rounded ${
-                  isUnlocked 
-                    ? 'opacity-100' 
-                    : 'opacity-50'
-                }`}
+                className={`p-2 rounded ${isUnlocked ? 'opacity-100' : 'opacity-50'}`}
               >
                 <div className="flex items-center gap-2">
-                  {achievement.icon || <Trophy className={`w-4 h-4 ${
-                    isUnlocked ? 'text-yellow-500' : 'text-gray-500'
-                  }`} />}
-                  <span className={`font-medium ${
-                    isUnlocked ? 'text-orange-500' : 'text-gray-500'
-                  }`}>
+                  {achievement.icon || (
+                    <Trophy
+                      className={`w-4 h-4 ${isUnlocked ? 'text-yellow-500' : 'text-gray-500'}`}
+                    />
+                  )}
+                  <span
+                    className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}
+                  >
                     {achievement.title}
                   </span>
                 </div>
-                <p className={`text-xs mt-1 ${
-                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                }`}>
+                <p
+                  className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                >
                   {isUnlocked ? achievement.description : '???'}
                 </p>
                 {isUnlocked && (
