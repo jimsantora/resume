@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Terminal, Code2, Database, Cloud } from 'lucide-react';
+import { useAchievements, AchievementNotification, AchievementsList } from './achievements';
+import { useScrollTrigger } from './useScrollTrigger';
 
 export default function ResumeWebsite() {
   const [theme, setTheme] = useState('dark');
@@ -7,6 +9,7 @@ export default function ResumeWebsite() {
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('hero');
+  const { unlockedAchievements, currentNotification, unlockAchievement } = useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -23,21 +26,33 @@ export default function ResumeWebsite() {
   };
 
   // Enhanced terminal-style section wrapper
-  const TerminalWindow: React.FC<{ title: string, children: React.ReactNode }> = ({ title, children }) => (
-    <div className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500">
-      <div className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
-        <div className="flex space-x-2 mr-4">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+  const TerminalWindow: React.FC<{ 
+    title: string, 
+    children: React.ReactNode, 
+    sectionId: string 
+  }> = ({ title, children, sectionId }) => {
+    // Create ref for scroll tracking
+    const sectionRef = useScrollTrigger(sectionId, unlockAchievement);
+
+    return (
+      <div 
+        ref={sectionRef} 
+        className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500"
+      >
+        <div className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
+          <div className="flex space-x-2 mr-4">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <span className="font-bold text-orange-500">{title}</span>
         </div>
-        <span className="font-bold text-orange-500">{title}</span>
+        <div className={`p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+          {children}
+        </div>
       </div>
-      <div className={`p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-        {children}
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className={`min-h-screen font-mono transition-colors duration-300 ${
@@ -45,6 +60,10 @@ export default function ResumeWebsite() {
         ? 'bg-gray-900 text-green-400' 
         : 'bg-gray-100 text-gray-800'
     }`}>
+
+      <AchievementNotification achievement={currentNotification} theme={theme} />
+      <AchievementsList unlockedAchievements={unlockedAchievements} theme={theme} />
+
       <div className="fixed top-4 right-4 flex items-center space-x-4">
         <span className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-gray-600'}`}>
           [system@jsantora ~]$
