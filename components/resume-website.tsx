@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Terminal, Code2, Database, Cloud } from 'lucide-react';
+import { Terminal, Code2, Database, Cloud } from 'lucide-react';
+import { useAchievements, AchievementNotification } from './achievements';
+import { useScrollTrigger } from './useScrollTrigger';
+import NavBar from './NavBar';
 
 export default function ResumeWebsite() {
   const [theme, setTheme] = useState('dark');
   const [typedText, setTypedText] = useState('');
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState('hero');
+  const { 
+    unlockedAchievements, 
+    currentNotification, 
+    unlockAchievement, 
+    achievements, 
+    totalPoints 
+  } = useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -23,21 +32,32 @@ export default function ResumeWebsite() {
   };
 
   // Enhanced terminal-style section wrapper
-  const TerminalWindow: React.FC<{ title: string, children: React.ReactNode }> = ({ title, children }) => (
-    <div className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500">
-      <div className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
-        <div className="flex space-x-2 mr-4">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+  const TerminalWindow: React.FC<{ 
+    title: string, 
+    children: React.ReactNode, 
+    sectionId: string 
+  }> = ({ title, children, sectionId }) => {
+    const sectionRef = useScrollTrigger(sectionId, unlockAchievement);
+
+    return (
+      <div 
+        ref={sectionRef} 
+        className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500"
+      >
+        <div className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}>
+          <div className="flex space-x-2 mr-4">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <span className="font-bold text-orange-500">{title}</span>
         </div>
-        <span className="font-bold text-orange-500">{title}</span>
+        <div className={`p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+          {children}
+        </div>
       </div>
-      <div className={`p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-        {children}
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className={`min-h-screen font-mono transition-colors duration-300 ${
@@ -45,23 +65,18 @@ export default function ResumeWebsite() {
         ? 'bg-gray-900 text-green-400' 
         : 'bg-gray-100 text-gray-800'
     }`}>
-      <div className="fixed top-4 right-4 flex items-center space-x-4">
-        <span className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-gray-600'}`}>
-          [system@jsantora ~]$
-        </span>
-        <button 
-          onClick={toggleTheme}
-          className="p-2 rounded-full hover:bg-opacity-20 hover:bg-gray-500"
-        >
-          {theme === 'dark' ? 
-            <Sun className="w-6 h-6" /> : 
-            <Moon className="w-6 h-6" />
-          }
-        </button>
-      </div>
+      <NavBar 
+        theme={theme}
+        toggleTheme={toggleTheme}
+        unlockedAchievements={unlockedAchievements}
+        achievements={achievements}
+        totalPoints={totalPoints}
+      />
 
-      <div className="container mx-auto px-4 py-16">
-        <TerminalWindow title="~ intro.sh">
+      <AchievementNotification achievement={currentNotification} theme={theme} />
+
+      <div className="container mx-auto px-4 pt-24">
+        <TerminalWindow title="~ intro.sh" sectionId="intro">
           <div className="mb-8 h-12">
             <span className="text-3xl font-bold">
               {typedText}
@@ -71,13 +86,13 @@ export default function ResumeWebsite() {
           <p className="text-xl mb-6 text-orange-500">SR SITE RELIABILITY ENGINEER</p>
           <div className={`space-y-4 ${theme === 'dark' ? 'text-green-300' : 'text-gray-700'}`}>
             <p>As a Senior Site Reliability Engineer with over 20 years in the industry, I have built my career on architecting enterprise-scale solutions and driving technical strategy across organizations. Currently at Epic Games, I focus on advancing CI/CD and Infrastructure as Code practices, contributing to the foundational technology that powers both Fortnite and the Unreal Engine ecosystem while establishing technical standards that influence multiple teams.</p>
-            <p>My seven-year tenure at Electronic Arts demonstrates my ability to drive long-term technical vision and organizational change. I progressed from leading FIFA's infrastructure modernization to architecting scalable platforms that served multiple game studios. I established company-wide best practices for cloud infrastructure and Kubernetes adoption while serving as a principal technical advisor for centralized monitoring and observability solutions. My architectural decisions and technical leadership supported major franchises including FIFA, Madden NFL, and Star Wars: Squadrons, where I designed resilient systems serving millions of players and mentored teams in operational excellence.</p>
-            <p>My expertise in building comprehensive observability solutions has been fundamental to driving reliability at scale. By implementing robust monitoring frameworks using tools like Prometheus, Grafana, and the ELK stack, I've enabled teams to gain deep insights into their systems' behavior and performance. I excel at defining and tracking meaningful SLIs that align with business objectives, establishing realistic SLOs that balance reliability with innovation, and creating SLAs that build trust with stakeholders. This data-driven approach to reliability engineering, combined with my broad technical expertise in cloud platforms, container orchestration, and modern DevOps practices, allows me to identify and solve complex technical challenges at the organizational level through systematic problem-solving and automation.</p>
+            <p>My seven-year tenure at Electronic Arts demonstrates my ability to drive long-term technical vision and organizational change. I progressed from leading FIFA&apos;s infrastructure modernization to architecting scalable platforms that served multiple game studios. I established company-wide best practices for cloud infrastructure and Kubernetes adoption while serving as a principal technical advisor for centralized monitoring and observability solutions. My architectural decisions and technical leadership supported major franchises including FIFA, Madden NFL, and Star Wars: Squadrons, where I designed resilient systems serving millions of players and mentored teams in operational excellence.</p>
+            <p>My expertise in building comprehensive observability solutions has been fundamental to driving reliability at scale. By implementing robust monitoring frameworks using tools like Prometheus, Grafana, and the ELK stack, I&apos;ve enabled teams to gain deep insights into their systems&apos; behavior and performance. I excel at defining and tracking meaningful SLIs that align with business objectives, establishing realistic SLOs that balance reliability with innovation, and creating SLAs that build trust with stakeholders. This data-driven approach to reliability engineering, combined with my broad technical expertise in cloud platforms, container orchestration, and modern DevOps practices, allows me to identify and solve complex technical challenges at the organizational level through systematic problem-solving and automation.</p>
             <p>I am a systems thinker at heart, driven by a passion for creating scalable, maintainable infrastructure that enables organizational success. By combining deep technical expertise with strong collaborative skills, I help teams reduce operational overhead, increase stability, and accelerate their delivery capabilities. I focus on identifying and solving problems that impact multiple teams, creating reusable solutions, and establishing technical standards that improve efficiency across the organization. This strategic approach to engineering challenges, coupled with my ability to mentor and influence others, has consistently helped organizations work more efficiently and deliver more effectively.</p>
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ skills.sh">
+        <TerminalWindow title="~ skills.sh" sectionId="skills">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-orange-500 flex items-center">
@@ -135,7 +150,7 @@ export default function ResumeWebsite() {
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ experience.sh">
+        <TerminalWindow title="~ experience.sh" sectionId="experience">
           <div className="space-y-8">
             {[
               {
@@ -238,7 +253,7 @@ export default function ResumeWebsite() {
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ game-credits.sh">
+        <TerminalWindow title="~ game-credits.sh" sectionId="game-credits">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { title: "MADDEN NFL 21", year: "2020", role: "Sr. DevOps Engineer" },
