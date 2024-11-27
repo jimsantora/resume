@@ -80,7 +80,7 @@ export default function ResumeWebsite() {
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <TerminalWindow title="~ intro.sh">
+        <TerminalWindow title="~ intro.sh" sectionId="intro">
           <div className="mb-8 h-12">
             <span className="text-3xl font-bold">
               {typedText}
@@ -96,7 +96,7 @@ export default function ResumeWebsite() {
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ skills.sh">
+        <TerminalWindow title="~ skills.sh" sectionId="skills">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-orange-500 flex items-center">
@@ -154,7 +154,7 @@ export default function ResumeWebsite() {
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ experience.sh">
+        <TerminalWindow title="~ experience.sh" sectionId="experience">
           <div className="space-y-8">
             {[
               {
@@ -257,7 +257,7 @@ export default function ResumeWebsite() {
           </div>
         </TerminalWindow>
 
-        <TerminalWindow title="~ game-credits.sh">
+        <TerminalWindow title="~ game-credits.sh" sectionId="game-credits">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { title: "MADDEN NFL 21", year: "2020", role: "Sr. DevOps Engineer" },
