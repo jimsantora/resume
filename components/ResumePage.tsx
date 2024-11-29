@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Code2, Database, Cloud } from 'lucide-react';
 import { useAchievements, AchievementNotification } from './Achievements';
-import { useScrollTrigger } from '../lib/hooks/useScrollTrigger';
 import TerminalWindow from './TerminalWindow';
 import IntroSection from './IntroSection';
 import ExperienceSection from './ExperienceSection';
 import CreditsSection from './CreditsSection';
+import SkillsSection from './SkillsSection';
 import NavBar from './NavBar';
-import Skills from './Skills';
 
 export default function ResumePage() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -55,7 +53,7 @@ export default function ResumePage() {
         </TerminalWindow>
 
         <TerminalWindow title="~ skills.sh" sectionId="skills">
-          <Skills theme={theme} />
+          <SkillsSection theme={theme} />
         </TerminalWindow>
 
         <TerminalWindow title="~ experience.sh" sectionId="experience">
