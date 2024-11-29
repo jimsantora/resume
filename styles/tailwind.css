@@ -11,3 +11,23 @@
   --card: 222.2 84% 4.9%;
   --card-foreground: 0 0% 100%;
 }
+
+@keyframes typing {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.typing-animation {
+  display: inline-block;
+  white-space: nowrap;
+  animation: typing 2s steps(25);
+}
+
+.typing-animation::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}

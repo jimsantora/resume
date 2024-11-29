@@ -1,39 +1,55 @@
 'use client';
 
-import { Terminal } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Home from '../components/Home';
+import Skills from '../components/Skills';
+import Navbar from '../components/Navbar';
+import { Geist } from '@/app/fonts'
 
-const TerminalWindow = ({ children, title }: { children: React.ReactNode; title: string }) => {
-  return (
-    <div className="rounded-lg overflow-hidden border-2 border-orange-500">
-      <div className="flex items-center p-2 bg-gray-800">
-        <div className="flex space-x-2 mr-4">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div>
-        <span className="font-bold text-orange-500">{title}</span>
-      </div>
-      <div className="p-6 bg-gray-900">
-        {children}
-      </div>
-    </div>
-  );
-};
+export default function Page() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [currentSection, setCurrentSection] = useState('default');
 
-export default function Home() {
+  const handleScroll = () => {
+    const sections = document.querySelectorAll('section[id]');
+    const scrollPosition = window.scrollY + 100;
+
+    sections.forEach(section => {
+      const sectionTop = (section as HTMLElement).offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+        setCurrentSection(section.id);
+      }
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <main className="min-h-screen">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto py-8">
-          <TerminalWindow title="/home/jsantora">
-            <h1 className="text-3xl font-bold mb-4">James Santora</h1>
-            <h2 className="text-xl text-orange-500 mb-6">SR SITE RELIABILITY ENGINEER</h2>
-            <p className="text-green-300 leading-relaxed">
-              With over 20 years of experience in the industry, I've worked with a multitude of different
-              technologies and held many different titles. The common thread throughout them all is that
-              I am (and always have been), an engineer at heart.
-            </p>
-          </TerminalWindow>
+    <main
+      className={`
+        min-h-screen transition-colors ${Geist.className}
+        ${theme === 'dark' ? 'bg-gray-900 text-green-400' : 'bg-gray-100 text-gray-800'}
+      `}
+    >
+      <Navbar 
+        theme={theme} 
+        toggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        currentSection={currentSection}
+      />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto space-y-16 pt-24">
+          <section id="intro">
+            <Home theme={theme} />
+          </section>
+
+          <section id="skills">
+            <Skills theme={theme} />
+          </section>
         </div>
       </div>
     </main>
