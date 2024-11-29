@@ -8,7 +8,6 @@ interface NavBarProps {
   toggleTheme: () => void;
   unlockedAchievements: string[];
   achievements: Achievement[];
-  totalPoints: number;
   currentSection?: string;
 }
 
@@ -17,7 +16,6 @@ const NavBar: React.FC<NavBarProps> = ({
   toggleTheme,
   unlockedAchievements,
   achievements,
-  totalPoints,
   currentSection = 'default',
 }) => {
   const [showAchievements, setShowAchievements] = useState(false);
@@ -47,11 +45,6 @@ const NavBar: React.FC<NavBarProps> = ({
               }`}
             >
               <Trophy className="w-6 h-6" />
-              {unlockedAchievements.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {unlockedAchievements.length}
-                </span>
-              )}
             </button>
 
             <button
@@ -75,13 +68,10 @@ const NavBar: React.FC<NavBarProps> = ({
         >
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-orange-500 font-bold flex items-center gap-2">
-                  <Trophy className="w-5 h-5" />
-                  Achievements ({unlockedAchievements.length}/{achievements.length})
-                </h3>
-                <p className="text-sm text-yellow-500 mt-1">Total XP: {totalPoints}</p>
-              </div>
+              <h3 className="text-orange-500 font-bold flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                Achievements
+              </h3>
               <button
                 onClick={() => setShowAchievements(false)}
                 className="text-gray-500 hover:text-gray-700"
@@ -104,17 +94,13 @@ const NavBar: React.FC<NavBarProps> = ({
                         />
                       )}
                       <span
-                        className={`font-medium ${
-                          isUnlocked ? 'text-orange-500' : 'text-gray-500'
-                        }`}
+                        className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}
                       >
                         {achievement.title}
                       </span>
                     </div>
                     <p
-                      className={`text-xs mt-1 ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`}
+                      className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
                     >
                       {isUnlocked ? achievement.description : '???'}
                     </p>

@@ -23,7 +23,7 @@ export const ShellPrompt: React.FC<{
   theme?: string;
   currentSection?: string;
 }> = ({ theme = 'dark', currentSection = 'default' }) => {
-  const hostname = 'excelcior';
+  const hostname = 'excelsior';
   const currentDir = getDirectoryFromSection(currentSection);
 
   return (

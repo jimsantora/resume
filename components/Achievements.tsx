@@ -10,7 +10,6 @@ export type Achievement = {
   icon?: React.ReactNode;
 };
 
-// Updated achievements to match terminal sections
 const achievements: Achievement[] = [
   {
     id: 'bio-unlocked',
@@ -46,7 +45,6 @@ const achievements: Achievement[] = [
   },
 ];
 
-// Map terminal sections to achievements
 const sectionAchievements: { [key: string]: string } = {
   intro: 'bio-unlocked',
   skills: 'skills-unlocked',
@@ -54,11 +52,9 @@ const sectionAchievements: { [key: string]: string } = {
   'game-credits': 'games-unlocked',
 };
 
-// Rest of the code remains the same
 export const useAchievements = () => {
   const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
   const [currentNotification, setCurrentNotification] = useState<Achievement | null>(null);
-  const [totalPoints, setTotalPoints] = useState<number>(0);
 
   const unlockAchievement = (sectionId: string) => {
     const achievementId = sectionAchievements[sectionId];
@@ -67,7 +63,6 @@ export const useAchievements = () => {
       if (achievement) {
         setUnlockedAchievements(prev => [...prev, achievementId]);
         setCurrentNotification(achievement);
-        setTotalPoints(prev => prev + (achievement.points || 0));
         setTimeout(() => setCurrentNotification(null), 3000);
       }
     }
@@ -78,11 +73,9 @@ export const useAchievements = () => {
     currentNotification,
     unlockAchievement,
     achievements,
-    totalPoints,
   };
 };
 
-// Previous notification component remains the same
 export const AchievementNotification: React.FC<{
   achievement: Achievement | null;
   theme: string;
@@ -125,12 +118,10 @@ export const AchievementNotification: React.FC<{
   );
 };
 
-// Updated achievements list to show total points
 export const AchievementsList: React.FC<{
   unlockedAchievements: string[];
   theme: string;
-  totalPoints: number;
-}> = ({ unlockedAchievements, theme, totalPoints }) => {
+}> = ({ unlockedAchievements, theme }) => {
   return (
     <div className="fixed left-4 top-20 max-w-xs">
       <div
@@ -140,9 +131,8 @@ export const AchievementsList: React.FC<{
       >
         <h3 className="text-orange-500 font-bold mb-3 flex items-center gap-2">
           <Trophy className="w-5 h-5" />
-          Achievements ({unlockedAchievements.length}/{achievements.length})
+          Achievements
         </h3>
-        <p className="text-sm text-yellow-500 mb-3">Total XP: {totalPoints}</p>
         <div className="space-y-2">
           {achievements.map(achievement => {
             const isUnlocked = unlockedAchievements.includes(achievement.id);
@@ -153,19 +143,13 @@ export const AchievementsList: React.FC<{
               >
                 <div className="flex items-center gap-2">
                   {achievement.icon || (
-                    <Trophy
-                      className={`w-4 h-4 ${isUnlocked ? 'text-yellow-500' : 'text-gray-500'}`}
-                    />
+                    <Trophy className={`w-4 h-4 ${isUnlocked ? 'text-yellow-500' : 'text-gray-500'}`} />
                   )}
-                  <span
-                    className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}
-                  >
+                  <span className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}>
                     {achievement.title}
                   </span>
                 </div>
-                <p
-                  className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
-                >
+                <p className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                   {isUnlocked ? achievement.description : '???'}
                 </p>
                 {isUnlocked && (

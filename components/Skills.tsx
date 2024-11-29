@@ -142,7 +142,7 @@ const skillCategories: Category[] = [
     skills: [
       { name: 'Kubernetes', level: 'EXPERT' },
       { name: 'Docker', level: 'EXPERT' },
-      { name: 'Harbor', level: 'ADVANCED' },
+      { name: 'Helm', level: 'EXPERT' },
     ],
   },
   {
@@ -161,8 +161,9 @@ const skillCategories: Category[] = [
     icon: Database,
     skills: [
       { name: 'NetApp', level: 'EXPERT' },
-      { name: 'EMC/Isilon', level: 'ADVANCED' },
-      { name: '3Par Storage', level: 'ADVANCED' },
+      { name: 'Isilon', level: 'ADVANCED' },
+      { name: '3Par', level: 'ADVANCED' },
+      { name: 'Hitachi', level: 'EXPERT'},
     ],
   },
   {
@@ -180,7 +181,7 @@ const skillCategories: Category[] = [
     name: 'DevOps & CI/CD',
     icon: GitBranch,
     skills: [
-      { name: 'GitLab CI/CD', level: 'EXPERT' },
+      { name: 'GitLab CI-CD', level: 'EXPERT' },
       { name: 'GitHub Actions', level: 'ADVANCED' },
       { name: 'Jenkins', level: 'EXPERT' },
       { name: 'GitOps', level: 'ADVANCED' },
