@@ -2,23 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Terminal, Code2, Database, Cloud } from 'lucide-react';
 import { useAchievements, AchievementNotification } from './Achievements';
 import { useScrollTrigger } from '../lib/hooks/useScrollTrigger';
+import TerminalWindow from './TerminalWindow';
 import NavBar from './NavBar';
 import Skills from './Skills';
 
-export default function ResumeWebsite() {
+export default function ResumePage() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [typedText, setTypedText] = useState('');
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentSection, setCurrentSection] = useState('default');
 
-  const {
-    unlockedAchievements,
-    currentNotification,
-    unlockAchievement,
-    achievements,
-    totalPoints,
-  } = useAchievements();
+  const { unlockedAchievements, currentNotification, unlockAchievement, achievements } =
+    useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -34,36 +30,6 @@ export default function ResumeWebsite() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  // Enhanced terminal-style section wrapper
-  const TerminalWindow: React.FC<{
-    title: string;
-    children: React.ReactNode;
-    sectionId: string;
-  }> = ({ title, children, sectionId }) => {
-    const handleSectionChange = (sectionId: string) => {
-      setCurrentSection(sectionId);
-      unlockAchievement(sectionId);
-    };
-
-    const sectionRef = useScrollTrigger(sectionId, handleSectionChange);
-
-    return (
-      <div ref={sectionRef} className="mb-12 rounded-lg overflow-hidden border-2 border-orange-500">
-        <div
-          className={`flex items-center p-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'}`}
-        >
-          <div className="flex space-x-2 mr-4">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          </div>
-          <span className="font-bold text-orange-500">{title}</span>
-        </div>
-        <div className={`p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>{children}</div>
-      </div>
-    );
-  };
-
   return (
     <div
       className={`min-h-screen font-mono transition-colors duration-300 ${
@@ -75,7 +41,6 @@ export default function ResumeWebsite() {
         toggleTheme={toggleTheme}
         unlockedAchievements={unlockedAchievements}
         achievements={achievements}
-        totalPoints={totalPoints}
         currentSection={currentSection}
       />
 
@@ -214,12 +179,7 @@ export default function ResumeWebsite() {
                 ],
               },
             ].map((job, index) => (
-              <div
-                key={index}
-                className={`p-6 rounded-lg border border-orange-500 transition-all hover:translate-x-2 ${
-                  theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'
-                }`}
-              >
+              <div key={index} className="job-card">
                 <div className="flex items-center mb-2">
                   <Code2 className="mr-2 text-orange-500" />
                   <h3 className="text-xl font-bold text-orange-500">{job.title}</h3>

@@ -143,13 +143,19 @@ export const AchievementsList: React.FC<{
               >
                 <div className="flex items-center gap-2">
                   {achievement.icon || (
-                    <Trophy className={`w-4 h-4 ${isUnlocked ? 'text-yellow-500' : 'text-gray-500'}`} />
+                    <Trophy
+                      className={`w-4 h-4 ${isUnlocked ? 'text-yellow-500' : 'text-gray-500'}`}
+                    />
                   )}
-                  <span className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}>
+                  <span
+                    className={`font-medium ${isUnlocked ? 'text-orange-500' : 'text-gray-500'}`}
+                  >
                     {achievement.title}
                   </span>
                 </div>
-                <p className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p
+                  className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                >
                   {isUnlocked ? achievement.description : '???'}
                 </p>
                 {isUnlocked && (

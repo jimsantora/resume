@@ -163,7 +163,7 @@ const skillCategories: Category[] = [
       { name: 'NetApp', level: 'EXPERT' },
       { name: 'Isilon', level: 'ADVANCED' },
       { name: '3Par', level: 'ADVANCED' },
-      { name: 'Hitachi', level: 'EXPERT'},
+      { name: 'Hitachi', level: 'EXPERT' },
     ],
   },
   {
@@ -193,17 +193,17 @@ const Skills: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
-        {skillCategories.map(category => (
-          <SkillCard
-            key={category.id}
-            category={category}
-            skills={category.skills}
-            theme={theme}
-            onHover={setActiveCategory}
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+      {skillCategories.map(category => (
+        <SkillCard
+          key={category.id}
+          category={category}
+          skills={category.skills}
+          theme={theme}
+          onHover={setActiveCategory}
+        />
+      ))}
+    </div>
   );
 };
 
