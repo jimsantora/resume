@@ -10,6 +10,7 @@ export type Achievement = {
   icon?: React.ReactNode;
 };
 
+// Updated achievements to match terminal sections
 const achievements: Achievement[] = [
   {
     id: 'bio-unlocked',
@@ -17,7 +18,7 @@ const achievements: Achievement[] = [
     description: 'Discovered the background of a seasoned SRE',
     section: 'intro',
     points: 100,
-    icon: <Brain className="w-6 h-6" />
+    icon: <Brain className="w-6 h-6" />,
   },
   {
     id: 'skills-unlocked',
@@ -25,7 +26,7 @@ const achievements: Achievement[] = [
     description: 'Explored a diverse technical skillset',
     section: 'skills',
     points: 200,
-    icon: <Terminal className="w-6 h-6" />
+    icon: <Terminal className="w-6 h-6" />,
   },
   {
     id: 'experience-unlocked',
@@ -33,7 +34,7 @@ const achievements: Achievement[] = [
     description: 'Traced the journey from IT Manager to SRE',
     section: 'experience',
     points: 300,
-    icon: <Code2 className="w-6 h-6" />
+    icon: <Code2 className="w-6 h-6" />,
   },
   {
     id: 'games-unlocked',
@@ -41,62 +42,34 @@ const achievements: Achievement[] = [
     description: 'Viewed contributions to major game titles',
     section: 'game-credits',
     points: 400,
-    icon: <Gamepad2 className="w-6 h-6" />
-  }
+    icon: <Gamepad2 className="w-6 h-6" />,
+  },
 ];
 
+// Map terminal sections to achievements
 const sectionAchievements: { [key: string]: string } = {
-  'intro': 'bio-unlocked',
-  'skills': 'skills-unlocked',
-  'experience': 'experience-unlocked',
-  'game-credits': 'games-unlocked'
+  intro: 'bio-unlocked',
+  skills: 'skills-unlocked',
+  experience: 'experience-unlocked',
+  'game-credits': 'games-unlocked',
 };
 
-const STORAGE_KEY = 'resume-achievements';
-
+// Rest of the code remains the same
 export const useAchievements = () => {
-  // Initialize state from sessionStorage
-  const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>(() => {
-    if (typeof window === 'undefined') return [];
-    const stored = sessionStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
   const [currentNotification, setCurrentNotification] = useState<Achievement | null>(null);
-  const [totalPoints, setTotalPoints] = useState<number>(() => {
-    if (typeof window === 'undefined') return 0;
-    const stored = sessionStorage.getItem(STORAGE_KEY);
-    if (!stored) return 0;
-    const unlocked = JSON.parse(stored);
-    return unlocked.reduce((total: number, id: string) => {
-      const achievement = achievements.find(a => a.id === id);
-      return total + (achievement?.points || 0);
-    }, 0);
-  });
-
-  // Update sessionStorage when achievements change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(unlockedAchievements));
-    }
-  }, [unlockedAchievements]);
+  const [totalPoints, setTotalPoints] = useState<number>(0);
 
   const unlockAchievement = (sectionId: string) => {
     const achievementId = sectionAchievements[sectionId];
-    if (!achievementId) return;
-
-    // Don't proceed if already unlocked
-    if (unlockedAchievements.includes(achievementId)) return;
-
-    const achievement = achievements.find(a => a.id === achievementId);
-    if (achievement) {
-      setUnlockedAchievements(prev => {
-        // Double check we haven't already added this
-        if (prev.includes(achievementId)) return prev;
-        return [...prev, achievementId];
-      });
-      setCurrentNotification(achievement);
-      setTotalPoints(prev => prev + (achievement.points || 0));
-      setTimeout(() => setCurrentNotification(null), 3000);
+    if (achievementId && !unlockedAchievements.includes(achievementId)) {
+      const achievement = achievements.find(a => a.id === achievementId);
+      if (achievement) {
+        setUnlockedAchievements(prev => [...prev, achievementId]);
+        setCurrentNotification(achievement);
+        setTotalPoints(prev => prev + (achievement.points || 0));
+        setTimeout(() => setCurrentNotification(null), 3000);
+      }
     }
   };
 
@@ -105,7 +78,7 @@ export const useAchievements = () => {
     currentNotification,
     unlockAchievement,
     achievements,
-    totalPoints
+    totalPoints,
   };
 };
 

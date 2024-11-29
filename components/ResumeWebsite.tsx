@@ -3,9 +3,10 @@ import { Terminal, Code2, Database, Cloud } from 'lucide-react';
 import { useAchievements, AchievementNotification } from './Achievements';
 import { useScrollTrigger } from '../lib/hooks/useScrollTrigger';
 import NavBar from './NavBar';
+import Skills from './Skills';
 
 export default function ResumeWebsite() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [typedText, setTypedText] = useState('');
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -136,61 +137,7 @@ export default function ResumeWebsite() {
         </TerminalWindow>
 
         <TerminalWindow title="~ skills.sh" sectionId="skills">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-orange-500 flex items-center">
-                <Cloud className="mr-2" /> Cloud & Infrastructure
-              </h3>
-              <ul className="space-y-1">
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  AWS, GCP, Azure
-                </li>
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  Kubernetes, Docker
-                </li>
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  Terraform, GitOps
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-orange-500 flex items-center">
-                <Terminal className="mr-2" /> Languages
-              </h3>
-              <ul className="space-y-1">
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  GO, Python
-                </li>
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  Shell, Perl
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-orange-500 flex items-center">
-                <Database className="mr-2" /> Data & Storage
-              </h3>
-              <ul className="space-y-1">
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  MySQL, PostgreSQL
-                </li>
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  Redis, Memcached
-                </li>
-                <li className="flex items-center">
-                  <span className="text-orange-500 mr-2">$</span>
-                  Kafka, RabbitMQ
-                </li>
-              </ul>
-            </div>
-          </div>
+          <Skills theme={theme} />
         </TerminalWindow>
 
         <TerminalWindow title="~ experience.sh" sectionId="experience">
