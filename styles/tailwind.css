@@ -29,31 +29,72 @@
     @apply p-6;
   }
 
-  .dark .terminal-header {
-    @apply bg-gray-800;
-  }
-  
-  .light .terminal-header {
-    @apply bg-gray-200;
-  }
-  
-  .dark .terminal-content {
-    @apply bg-gray-900;
-  }
-  
-  .light .terminal-content {
-    @apply bg-gray-100;
+  .skill-card {
+    @apply p-6 rounded-lg border-2 border-orange-500 transition-all hover:scale-105;
   }
 
-  .job-card {
-    @apply p-6 rounded-lg border border-orange-500 transition-all hover:translate-x-2;
+  .skill-icon-container {
+    @apply p-3 rounded-lg;
+  }
+
+  .skill-progress-bar {
+    @apply h-1 bg-gray-200 rounded-full overflow-hidden;
+  }
+
+  .game-credit-card {
+    @apply p-4 rounded-lg border-2 border-orange-500 hover:scale-105 transition-transform;
+  }
+
+  .intro-text-container {
+    @apply mb-8 h-12;
+  }
+
+  .job-title {
+    @apply text-xl font-bold text-orange-500;
+  }
+
+  /* Theme variations */
+  .dark {
+    .terminal-header {
+      @apply bg-gray-800;
+    }
+    
+    .terminal-content {
+      @apply bg-gray-900;
+    }
+
+    .skill-card {
+      @apply bg-gray-800/50;
+    }
+
+    .skill-icon-container {
+      @apply bg-orange-500/10;
+    }
+
+    .job-card {
+      @apply bg-gray-800 hover:bg-gray-700;
+    }
   }
   
-  .dark .job-card {
-    @apply bg-gray-800 hover:bg-gray-700;
-  }
-  
-  .light .job-card {
-    @apply bg-white hover:bg-gray-50;
+  .light {
+    .terminal-header {
+      @apply bg-gray-200;
+    }
+    
+    .terminal-content {
+      @apply bg-gray-100;
+    }
+
+    .skill-card {
+      @apply bg-white/50;
+    }
+
+    .skill-icon-container {
+      @apply bg-orange-500/5;
+    }
+
+    .job-card {
+      @apply bg-white hover:bg-gray-50;
+    }
   }
 }

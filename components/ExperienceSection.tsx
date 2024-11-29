@@ -92,7 +92,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ jobs = defaultJob
         <div key={index} className="job-card">
           <div className="flex items-center mb-2">
             <Code2 className="mr-2 text-orange-500" />
-            <h3 className="text-xl font-bold text-orange-500">{job.title}</h3>
+            <h3 className="job-title">{job.title}</h3>
           </div>
           <div className="flex justify-between items-center mb-4">
             <span className="font-bold">{job.company}</span>

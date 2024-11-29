@@ -36,12 +36,7 @@ const CreditsSection: React.FC<CreditsSectionProps> = ({ theme, credits = defaul
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {credits.map((game, index) => (
-        <div
-          key={index}
-          className={`p-4 rounded-lg border-2 border-orange-500 hover:scale-105 transition-transform ${
-            theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-          }`}
-        >
+        <div key={index} className="game-credit-card">
           <h3 className="font-bold text-orange-500">{game.title}</h3>
           <p className="text-sm opacity-75">{game.year}</p>
           <p className="text-sm mt-2 flex items-center">

@@ -78,16 +78,9 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {categories.map((category, index) => (
-        <div
-          key={index}
-          className={`p-6 rounded-lg border-2 border-orange-500 transition-all hover:scale-105 ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'
-          }`}
-        >
+        <div key={index} className="skill-card">
           <div className="flex items-center gap-4 mb-6">
-            <div className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-orange-500/10' : 'bg-orange-500/5'}`}>
-              {category.icon}
-            </div>
+            <div className="skill-icon-container">{category.icon}</div>
             <h3 className="text-xl font-bold text-orange-500">{category.title}</h3>
           </div>
 
@@ -98,14 +91,14 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
                   <span>{skill.name}</span>
                   <span className="text-sm opacity-75">{skill.level}</span>
                 </div>
-                <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div className="skill-progress-bar">
                   <div
                     className={`h-full transition-all duration-300 ${
                       skill.level === 'EXPERT'
                         ? 'bg-green-500 w-full'
                         : skill.level === 'ADVANCED'
-                        ? 'bg-blue-500 w-4/5'
-                        : 'bg-yellow-500 w-3/5'
+                          ? 'bg-blue-500 w-4/5'
+                          : 'bg-yellow-500 w-3/5'
                     }`}
                   />
                 </div>

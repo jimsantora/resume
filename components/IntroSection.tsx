@@ -8,7 +8,7 @@ interface IntroSectionProps {
 const IntroSection: React.FC<IntroSectionProps> = ({ typedText, theme }) => {
   return (
     <>
-      <div className="mb-8 h-12">
+      <div className="intro-text-container">
         <span className="text-3xl font-bold">
           {typedText}
           <span className="animate-pulse">_</span>
