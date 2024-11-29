@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code2 } from 'lucide-react';
+import { Code2, Building2 } from 'lucide-react';
 
 interface JobDetails {
   title: string;
@@ -90,18 +90,22 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ jobs = defaultJob
     <div className="space-y-8">
       {jobs.map((job, index) => (
         <div key={index} className="job-card">
-          <div className="flex items-center mb-2">
-            <Code2 className="mr-2 text-orange-500" />
-            <h3 className="job-title">{job.title}</h3>
-          </div>
-          <div className="flex justify-between items-center mb-4">
-            <span className="font-bold">{job.company}</span>
-            <span className="text-sm opacity-75">{job.period}</span>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20">
+              <Building2 className="w-6 h-6 text-orange-500" />
+            </div>
+            <div>
+              <h3 className="job-title">{job.title}</h3>
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold text-orange-400">{job.company}</span>
+                <span className="text-sm opacity-75">{job.period}</span>
+              </div>
+            </div>
           </div>
           <ul className="space-y-2">
             {job.details.map((detail, idx) => (
               <li key={idx} className="flex items-start">
-                <span className="text-orange-500 mr-2 mt-1">$</span>
+                <span className="text-orange-500 mr-2 mt-1">*</span>
                 <span>{detail}</span>
               </li>
             ))}

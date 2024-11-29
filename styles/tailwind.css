@@ -18,7 +18,7 @@
   }
   
   .terminal-header {
-    @apply flex items-center p-2;
+    @apply flex items-center p-2 bg-gradient-to-r from-orange-500/10 to-transparent;
   }
   
   .terminal-header-dot {
@@ -30,15 +30,15 @@
   }
 
   .skill-card {
-    @apply p-6 rounded-lg border-2 border-orange-500 transition-all hover:scale-105;
+    @apply p-6 rounded-lg border-2 border-orange-500/50 transition-all hover:scale-105 bg-gradient-to-br hover:border-orange-500;
   }
 
   .skill-icon-container {
-    @apply p-3 rounded-lg;
+    @apply p-3 rounded-lg bg-orange-500/20 ring-1 ring-orange-500/20;
   }
 
   .skill-progress-bar {
-    @apply h-1 bg-gray-200 rounded-full overflow-hidden;
+    @apply h-1 bg-gray-200 rounded-full overflow-hidden mt-2;
   }
 
   .game-credit-card {
@@ -53,10 +53,15 @@
     @apply text-xl font-bold text-orange-500;
   }
 
+  .job-card {
+    @apply p-6 rounded-lg border border-orange-500/30 transition-all hover:translate-x-2 hover:border-orange-500 
+    bg-gradient-to-r shadow-lg backdrop-blur-sm mb-4;
+  }
+
   /* Theme variations */
   .dark {
     .terminal-header {
-      @apply bg-gray-800;
+      @apply bg-gray-800 bg-gradient-to-r from-orange-500/10 to-gray-800;
     }
     
     .terminal-content {
@@ -64,21 +69,21 @@
     }
 
     .skill-card {
-      @apply bg-gray-800/50;
+      @apply from-gray-800/80 to-gray-900 shadow-lg shadow-orange-500/10 backdrop-blur-sm;
     }
 
     .skill-icon-container {
-      @apply bg-orange-500/10;
+      @apply bg-orange-500/20 text-orange-400;
     }
 
     .job-card {
-      @apply bg-gray-800 hover:bg-gray-700;
+      @apply from-gray-800/90 to-gray-900 shadow-orange-500/5;
     }
   }
   
   .light {
     .terminal-header {
-      @apply bg-gray-200;
+      @apply bg-gray-200 bg-gradient-to-r from-orange-500/10 to-gray-200;
     }
     
     .terminal-content {
@@ -86,15 +91,15 @@
     }
 
     .skill-card {
-      @apply bg-white/50;
+      @apply from-white to-orange-50/90 shadow-xl shadow-orange-500/20;
     }
 
     .skill-icon-container {
-      @apply bg-orange-500/5;
+      @apply bg-orange-500/10 text-orange-600;
     }
 
     .job-card {
-      @apply bg-white hover:bg-gray-50;
+      @apply from-white to-orange-50/80 shadow-orange-500/10;
     }
   }
 }
