@@ -33,7 +33,7 @@ export default function ResumePage() {
 
   return (
     <div
-      className={`min-h-screen font-mono transition-colors duration-300 ${
+      className={`min-h-screen font-mono transition-colors duration-300 fixed inset-0 overflow-auto ${
         theme === 'dark' ? 'bg-gray-900 text-green-400' : 'bg-gray-100 text-gray-800'
       }`}
     >
