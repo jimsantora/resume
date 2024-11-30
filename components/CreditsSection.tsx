@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Terminal } from 'lucide-react';
 
 interface GameCredit {
@@ -56,12 +57,16 @@ const CreditsSection: React.FC<CreditsSectionProps> = ({ theme, credits = defaul
                 <div
                   className={`absolute -inset-1 rounded-lg ${theme === 'dark' ? 'bg-orange-500' : 'bg-orange-300'} opacity-50 blur`}
                 />
-                <img
-                  src={`/resume/images/${game.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.jpg`}
-                  alt={`${game.title} box art`}
-                  className="relative w-full h-full object-cover rounded-lg"
-                  loading="lazy"
-                />
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={`/resume/images/${game.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.jpg`}
+                    alt={`${game.title} box art`}
+                    fill
+                    className="object-cover rounded-lg"
+                    sizes="(max-width: 768px) 100px, 128px"
+                    priority={index < 6}
+                  />
+                </div>
               </div>
             </div>
           </div>

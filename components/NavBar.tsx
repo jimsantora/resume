@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { Sun, Moon, Trophy, Brain, Terminal, Code2, Gamepad2 } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import ShellPrompt from './ShellPrompt';
 
 interface NavBarProps {

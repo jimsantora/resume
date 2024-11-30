@@ -1,15 +1,11 @@
 import React from 'react';
-import { Code2, Building2 } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 
 interface JobDetails {
   title: string;
   company: string;
   period: string;
   details: string[];
-}
-
-interface ExperienceSectionProps {
-  jobs?: JobDetails[];
 }
 
 const defaultJobs: JobDetails[] = [
@@ -91,7 +87,7 @@ const ExperienceSection: React.FC<{ jobs?: JobDetails[] }> = ({ jobs = defaultJo
       {jobs.map((job, index) => (
         <div key={index} className="job-card">
           <div className="flex flex-col md:flex-row items-start gap-4">
-            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20">
+            <div className="hidden md:block p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20">
               <Building2 className="w-6 h-6 text-orange-500" />
             </div>
 
