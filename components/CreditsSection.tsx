@@ -39,7 +39,9 @@ const CreditsSection: React.FC<CreditsSectionProps> = ({ theme, credits = defaul
             {/* Game info - left side */}
             <div className="flex-1 flex flex-col justify-between pr-4">
               <div>
-                <h3 className="font-gaming font-black text-orange-500 text-2xl mb-2">{game.title}</h3>
+                <h3 className="font-gaming font-black text-orange-500 text-2xl mb-2">
+                  {game.title}
+                </h3>
                 <p className="text-sm opacity-75">{game.year}</p>
               </div>
               <p className="text-sm mt-2 flex items-center">
@@ -51,7 +53,9 @@ const CreditsSection: React.FC<CreditsSectionProps> = ({ theme, credits = defaul
             {/* Box art - right side */}
             <div className="w-32 flex-shrink-0">
               <div className="relative">
-                <div className={`absolute -inset-1 rounded-lg ${theme === 'dark' ? 'bg-orange-500' : 'bg-orange-300'} opacity-50 blur`} />
+                <div
+                  className={`absolute -inset-1 rounded-lg ${theme === 'dark' ? 'bg-orange-500' : 'bg-orange-300'} opacity-50 blur`}
+                />
                 <img
                   src={`/resume/images/${game.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.jpg`}
                   alt={`${game.title} box art`}

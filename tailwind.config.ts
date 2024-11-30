@@ -16,6 +16,7 @@ const config: Config = {
       },
       fontFamily: {
         gaming: ['Chakra Petch', 'sans-serif'],
+        syne: ['var(--font-syne)'],
       },
     },
   },

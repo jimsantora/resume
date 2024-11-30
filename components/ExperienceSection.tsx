@@ -15,7 +15,7 @@ interface ExperienceSectionProps {
 const defaultJobs: JobDetails[] = [
   {
     title: 'SR. SITE RELIABILITY ENGINEER',
-    company: 'TWITTER',
+    company: 'Twitter',
     period: '2022 – Present',
     details: [
       "Dedicated to Twitter's in-memory caching teams, building on previous experience in data storage, availability, and reliability",
@@ -25,7 +25,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'SR. DEVOPS / SITE RELIABILITY ENGINEER',
-    company: 'ELECTRONIC ARTS',
+    company: 'Electronic Arts',
     period: '2019 – 2022',
     details: [
       'Built and promoted modern, scalable platform for game servers using Kubernetes',
@@ -35,7 +35,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'SR. SYSTEMS ENGINEER (LEAD)',
-    company: 'ELECTRONIC ARTS',
+    company: 'Electronic Arts',
     period: '2015 – 2019',
     details: [
       'Lead Systems Engineer for FIFA, focusing on configuration management modernization',
@@ -45,7 +45,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'SR. SYSTEMS ENGINEER',
-    company: 'CBS INTERACTIVE',
+    company: 'CBS Interactive',
     period: '2008 – 2015',
     details: [
       'Lead storage administrator, maintaining over a petabyte of data',
@@ -55,7 +55,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'UNIX ADMINISTRATOR',
-    company: 'RIGHT MEDIA / YAHOO INC.',
+    company: 'Yahoo, Inc.',
     period: '2005 – 2008',
     details: [
       'Scaled ad serving network from 300 to 5,000+ nodes',
@@ -65,7 +65,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'SYSTEMS ADMINISTRATOR',
-    company: 'BOLT MEDIA',
+    company: 'Bolt Media',
     period: '2003 – 2005',
     details: [
       'Deployed and optimized social media platform on JBoss, Apache and MySQL',
@@ -75,7 +75,7 @@ const defaultJobs: JobDetails[] = [
   },
   {
     title: 'IT MANAGER',
-    company: 'AGRA SERVICES BROKERAGE CO.',
+    company: 'Agra Services Brokerage Co.',
     period: '2001 – 2003',
     details: [
       'Maintained SCO Unix, Linux, and Windows servers',
@@ -85,31 +85,37 @@ const defaultJobs: JobDetails[] = [
   },
 ];
 
-const ExperienceSection: React.FC<ExperienceSectionProps> = ({ jobs = defaultJobs }) => {
+const ExperienceSection: React.FC<{ jobs?: JobDetails[] }> = ({ jobs = defaultJobs }) => {
   return (
     <div className="space-y-8">
       {jobs.map((job, index) => (
         <div key={index} className="job-card">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20 mt-1">
               <Building2 className="w-6 h-6 text-orange-500" />
             </div>
-            <div>
-              <h3 className="job-title">{job.title}</h3>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-orange-400">{job.company}</span>
-                <span className="text-sm opacity-75">{job.period}</span>
+
+            <div className="flex-1">
+              {/* Company and Date */}
+              <div className="flex justify-between items-center mb-1">
+                <h3 className="text-3xl font-syne text-orange-500">{job.company}</h3>
+                <span className="text-sm opacity-75 ml-4">{job.period}</span>
               </div>
+
+              {/* Job Title */}
+              <h4 className="text-lg font-semibold text-orange-400 mb-4">{job.title}</h4>
+
+              {/* Details */}
+              <ul className="space-y-2">
+                {job.details.map((detail, idx) => (
+                  <li key={idx} className="flex items-start">
+                    <span className="text-orange-500 mr-2 mt-1">*</span>
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <ul className="space-y-2">
-            {job.details.map((detail, idx) => (
-              <li key={idx} className="flex items-start">
-                <span className="text-orange-500 mr-2 mt-1">*</span>
-                <span>{detail}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       ))}
     </div>

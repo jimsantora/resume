@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,7 +45,9 @@
   }
 
   .game-credit-card {
-    @apply p-4 rounded-lg border-2 border-orange-500 hover:scale-105 transition-transform;
+    @apply p-4 rounded-lg border border-orange-500/30 
+           transform transition-transform duration-300 ease-in-out 
+           hover:border-2 hover:border-orange-500 hover:scale-105;
   }
 
   .intro-text-container {
@@ -81,6 +84,10 @@
     .job-card {
       @apply from-gray-800/90 to-gray-900 shadow-orange-500/5;
     }
+
+    .game-credit-card {
+      @apply from-gray-800/90 to-gray-900 shadow-orange-500/5 bg-gradient-to-r shadow-lg backdrop-blur-sm;
+    }
   }
   
   .light {
@@ -102,6 +109,10 @@
 
     .job-card {
       @apply from-white to-orange-50/80 shadow-orange-500/10;
+    }
+
+    .game-credit-card {
+      @apply from-white to-orange-50/80 shadow-orange-500/10 bg-gradient-to-r shadow-lg;
     }
   }
 }
