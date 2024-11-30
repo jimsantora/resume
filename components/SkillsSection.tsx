@@ -69,13 +69,13 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
                   <img
                     src={getSkillImage(skill)}
                     alt={`${skill} logo`}
-                    className="w-16 h-16 object-contain filter group-hover:brightness-110"
+                    className="w-20 h-20 md:w-16 md:h-16 object-contain filter group-hover:brightness-110"
                     onError={e => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
                 </div>
-                <span className="text-md text-center font-medium">{skill}</span>
+                <span className="text-xs md:text-sm text-center font-medium">{skill}</span>
               </div>
             ))}
           </div>

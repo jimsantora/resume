@@ -33,11 +33,7 @@ export default function ResumePage() {
         theme === 'dark' ? 'bg-gray-900 text-green-400' : 'bg-gray-100 text-gray-800'
       }`}
     >
-      <NavBar
-        theme={theme}
-        toggleTheme={toggleTheme}
-        currentSection={currentSection}
-      />
+      <NavBar theme={theme} toggleTheme={toggleTheme} currentSection={currentSection} />
 
       <div className="container mx-auto px-4 pt-24">
         <div data-section="intro">

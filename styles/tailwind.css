@@ -59,10 +59,11 @@
   }
 
   .job-card {
-    @apply p-6 rounded-lg border border-orange-500/30 transition-all hover:translate-x-2 hover:border-orange-500 
-    bg-gradient-to-r shadow-lg backdrop-blur-sm mb-4;
+    @apply p-4 md:p-6 rounded-lg border border-orange-500/30 
+           transition-all hover:translate-x-2 hover:border-orange-500 
+           bg-gradient-to-r shadow-lg backdrop-blur-sm mb-4;
   }
-
+  
   /* Theme variations */
   .dark {
     .terminal-header {
@@ -84,7 +85,7 @@
     .job-card {
       @apply from-gray-800/90 to-gray-900 shadow-orange-500/5;
     }
-
+  
     .game-credit-card {
       @apply from-gray-800/90 to-gray-900 shadow-orange-500/5 bg-gradient-to-r shadow-lg backdrop-blur-sm;
     }
@@ -110,7 +111,7 @@
     .job-card {
       @apply from-white to-orange-50/80 shadow-orange-500/10;
     }
-
+  
     .game-credit-card {
       @apply from-white to-orange-50/80 shadow-orange-500/10 bg-gradient-to-r shadow-lg;
     }
