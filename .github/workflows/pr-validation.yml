@@ -1,6 +1,4 @@
-# pr-validation.yml
 name: PR Validation
-
 on:
   pull_request:
     branches: [ main ]
@@ -8,12 +6,9 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: '21'
         cache: 'npm'
@@ -21,42 +16,21 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Cache dependencies and build output
+    - name: Cache node_modules
       uses: actions/cache@v3
-      id: cache
       with:
         path: |
           ~/.npm
-          .next/cache
-          out
           node_modules
-        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-          ${{ runner.os }}-nextjs-
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Type checking
-      run: npm run type-check 
-
-    - name: Lint check
+    - name: Type & Lint check
       run: |
-        if [ -f ".eslintrc.js" ]; then
-          npm run lint
-        else
-          echo "No ESLint configuration found"
-        fi
+        npm run type-check
+        npm run lint
 
     - name: Run tests
-      run: |
-        if [ -f "jest.config.js" ]; then
-          npm test
-        else
-          echo "No Jest configuration found"
-        fi
+      run: npm test
 
-    - name: Build verification
+    - name: Build
       run: npm run build
-
-    - name: Generate test coverage report
-      if: always()
-      run: npm run test:coverage || echo "No coverage script found"
