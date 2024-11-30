@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAchievements, AchievementNotification } from './Achievements';
 import TerminalWindow from './TerminalWindow';
 import IntroSection from './IntroSection';
 import ExperienceSection from './ExperienceSection';
@@ -13,9 +12,6 @@ export default function ResumePage() {
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentSection, setCurrentSection] = useState('default');
-
-  const { unlockedAchievements, currentNotification, unlockAchievement, achievements } =
-    useAchievements();
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -40,29 +36,33 @@ export default function ResumePage() {
       <NavBar
         theme={theme}
         toggleTheme={toggleTheme}
-        unlockedAchievements={unlockedAchievements}
-        achievements={achievements}
         currentSection={currentSection}
       />
 
-      <AchievementNotification achievement={currentNotification} theme={theme} />
-
       <div className="container mx-auto px-4 pt-24">
-        <TerminalWindow title="~ intro.sh" sectionId="intro">
-          <IntroSection typedText={typedText} theme={theme} />
-        </TerminalWindow>
+        <div data-section="intro">
+          <TerminalWindow title="~ intro.sh" sectionId="intro">
+            <IntroSection typedText={typedText} theme={theme} />
+          </TerminalWindow>
+        </div>
 
-        <TerminalWindow title="~ skills.sh" sectionId="skills">
-          <SkillsSection theme={theme} />
-        </TerminalWindow>
+        <div data-section="intro">
+          <TerminalWindow title="~ skills.sh" sectionId="skills">
+            <SkillsSection theme={theme} />
+          </TerminalWindow>
+        </div>
 
-        <TerminalWindow title="~ experience.sh" sectionId="experience">
-          <ExperienceSection />
-        </TerminalWindow>
+        <div data-section="experience">
+          <TerminalWindow title="~ experience.sh" sectionId="experience">
+            <ExperienceSection />
+          </TerminalWindow>
+        </div>
 
-        <TerminalWindow title="~ game-credits.sh" sectionId="game-credits">
-          <CreditsSection theme={theme} />
-        </TerminalWindow>
+        <div data-section="game-credits">
+          <TerminalWindow title="~ game-credits.sh" sectionId="game-credits">
+            <CreditsSection theme={theme} />
+          </TerminalWindow>
+        </div>
       </div>
     </div>
   );
