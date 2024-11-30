@@ -49,10 +49,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {categories.map((category, index) => (
-        <div
-          key={index}
-          className={`skill-card ${theme === 'dark' ? 'bg-gray-800/30' : 'bg-white/90'}`}
-        >
+        <div key={index} className={`skill-card ${theme === 'dark' ? 'bg-gray-800/30' : 'bg-white/90'}`}>
           <div className="flex items-center gap-4 mb-8">
             <div className="skill-icon-container">{category.icon}</div>
             <h3 className="text-2xl font-bold text-orange-500">{category.title}</h3>
@@ -73,7 +70,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
                     fill
                     className="object-contain filter group-hover:brightness-110"
                     sizes="64px"
-                    onError={(e) => {
+                    onError={e => {
                       // Fallback to a default icon or hide the image container
                       (e.target as HTMLElement).style.display = 'none';
                     }}

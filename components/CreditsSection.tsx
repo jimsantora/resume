@@ -40,9 +40,7 @@ const CreditsSection: React.FC<CreditsSectionProps> = ({ theme, credits = defaul
             {/* Game info - left side */}
             <div className="flex-1 flex flex-col justify-between pr-4">
               <div>
-                <h3 className="font-gaming font-black text-orange-500 text-2xl mb-2">
-                  {game.title}
-                </h3>
+                <h3 className="font-gaming font-black text-orange-500 text-2xl mb-2">{game.title}</h3>
                 <p className="text-sm opacity-75">{game.year}</p>
               </div>
               <p className="text-sm mt-2 flex items-center">
