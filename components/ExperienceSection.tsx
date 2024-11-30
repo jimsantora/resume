@@ -90,16 +90,16 @@ const ExperienceSection: React.FC<{ jobs?: JobDetails[] }> = ({ jobs = defaultJo
     <div className="space-y-8">
       {jobs.map((job, index) => (
         <div key={index} className="job-card">
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20 mt-1">
+          <div className="flex flex-col md:flex-row items-start gap-4">
+            <div className="p-3 rounded-lg bg-orange-500/10 ring-1 ring-orange-500/20">
               <Building2 className="w-6 h-6 text-orange-500" />
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 w-full">
               {/* Company and Date */}
-              <div className="flex justify-between items-center mb-1">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-1">
                 <h3 className="text-3xl font-syne text-orange-500">{job.company}</h3>
-                <span className="text-sm opacity-75 ml-4">{job.period}</span>
+                <span className="text-sm opacity-75 md:ml-4 mt-1 md:mt-0">{job.period}</span>
               </div>
 
               {/* Job Title */}
@@ -108,8 +108,8 @@ const ExperienceSection: React.FC<{ jobs?: JobDetails[] }> = ({ jobs = defaultJo
               {/* Details */}
               <ul className="space-y-2">
                 {job.details.map((detail, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="text-orange-500 flex-shrink-0">*</span>
+                  <li key={idx} className="flex items-start">
+                    <span className="text-orange-500 mr-2 mt-1">*</span>
                     <span>{detail}</span>
                   </li>
                 ))}
