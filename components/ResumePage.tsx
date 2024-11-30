@@ -11,7 +11,7 @@ export default function ResumePage() {
   const [typedText, setTypedText] = useState('');
   const introText = "Hello, I'm James Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentSection, setCurrentSection] = useState('default');
+  const [currentSection] = useState('default');
 
   useEffect(() => {
     if (currentIndex < introText.length) {

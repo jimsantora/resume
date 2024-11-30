@@ -1,5 +1,6 @@
 import React from 'react';
-import { Cloud, Database, Code2, Activity, GitBranch, Box } from 'lucide-react';
+import Image from 'next/image';
+import { Cloud, Database, Code2, Activity, GitBranch } from 'lucide-react';
 
 interface SkillCategory {
   title: string;
@@ -48,10 +49,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {categories.map((category, index) => (
-        <div
-          key={index}
-          className={`skill-card ${theme === 'dark' ? 'bg-gray-800/30' : 'bg-white/90'}`}
-        >
+        <div key={index} className={`skill-card ${theme === 'dark' ? 'bg-gray-800/30' : 'bg-white/90'}`}>
           <div className="flex items-center gap-4 mb-8">
             <div className="skill-icon-container">{category.icon}</div>
             <h3 className="text-2xl font-bold text-orange-500">{category.title}</h3>
@@ -65,13 +63,16 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defau
                   transition-all duration-300 hover:scale-105 hover:bg-orange-500/10 
                   ${theme === 'dark' ? 'text-green-400' : 'text-gray-700'}`}
               >
-                <div className="relative transform transition-transform duration-300 group-hover:-translate-y-1">
-                  <img
+                <div className="relative w-16 h-16 transform transition-transform duration-300 group-hover:-translate-y-1">
+                  <Image
                     src={getSkillImage(skill)}
                     alt={`${skill} logo`}
-                    className="w-20 h-20 md:w-16 md:h-16 object-contain filter group-hover:brightness-110"
+                    fill
+                    className="object-contain filter group-hover:brightness-110"
+                    sizes="64px"
                     onError={e => {
-                      e.currentTarget.style.display = 'none';
+                      // Fallback to a default icon or hide the image container
+                      (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
                 </div>
