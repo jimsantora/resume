@@ -108,8 +108,8 @@ const ExperienceSection: React.FC<{ jobs?: JobDetails[] }> = ({ jobs = defaultJo
               {/* Details */}
               <ul className="space-y-2">
                 {job.details.map((detail, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <span className="text-orange-500 mr-2 mt-1">*</span>
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="text-orange-500 flex-shrink-0">*</span>
                     <span>{detail}</span>
                   </li>
                 ))}
