@@ -14,6 +14,10 @@ const config: Config = {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
+      fontFamily: {
+        gaming: ['Chakra Petch', 'sans-serif'],
+        syne: ['var(--font-syne)'],
+      },
     },
   },
   plugins: [],

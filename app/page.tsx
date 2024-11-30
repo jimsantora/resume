@@ -1,6 +1,6 @@
 'use client';
-import ResumeWebsite from '../components/ResumeWebsite';
+import ResumePage from '../components/ResumePage';
 
 export default function Home() {
-  return <ResumeWebsite />;
+  return <ResumePage />;
 }
