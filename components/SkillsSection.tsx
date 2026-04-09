@@ -1,88 +1,171 @@
 import React from 'react';
-import Image from 'next/image';
-import { Cloud, Database, Code2, Activity, GitBranch } from 'lucide-react';
+import * as SimpleIcons from 'simple-icons';
+import { Cloud, Box, GitBranch, Brain, Wrench, Gauge, Database, Code } from 'lucide-react';
+import TerminalPrompt from './TerminalPrompt';
 
-interface SkillCategory {
-  title: string;
-  icon: React.ReactNode;
-  skills: string[];
-}
+const getIcon = (name: string): { svg: string } | undefined => {
+  const iconName = `si${name}` as keyof typeof SimpleIcons;
+  return SimpleIcons[iconName] as { svg: string } | undefined;
+};
 
-interface SkillsSectionProps {
-  theme: 'light' | 'dark';
-  categories?: SkillCategory[];
-}
-
-const defaultCategories: SkillCategory[] = [
+// Row 1
+const row1: SkillCategory[] = [
   {
-    title: 'Cloud & Infrastructure',
-    icon: <Cloud className="w-6 h-6" />,
-    skills: ['AWS', 'GCP', 'Azure', 'Terraform', 'Docker', 'Kubernetes'],
+    category: 'Cloud & Infrastructure',
+    icon: Cloud,
+    skills: [
+      { name: 'AWS', iconKey: 'Amazonaws' },
+      { name: 'GCP', iconKey: 'Googlecloud' },
+      { name: 'Azure', iconKey: 'Microsoftazure' },
+      { name: 'Packer', iconKey: 'Packer' },
+      { name: 'GNU/Linux', iconKey: 'Linux' },
+    ],
   },
   {
-    title: 'Observability',
-    icon: <Activity className="w-6 h-6" />,
-    skills: ['Prometheus', 'Grafana', 'Elasticsearch', 'Logstash', 'Kibana'],
-  },
-  {
-    title: 'CI/CD & DevOps',
-    icon: <GitBranch className="w-6 h-6" />,
-    skills: ['GitLab CI-CD', 'GitHub Actions', 'Jenkins', 'Argo', 'Packer'],
-  },
-  {
-    title: 'Configuration & Automation',
-    icon: <Code2 className="w-6 h-6" />,
-    skills: ['Puppet', 'Chef', 'Ansible', 'Python', 'Go', 'Shell'],
-  },
-  {
-    title: 'Storage & Data',
-    icon: <Database className="w-6 h-6" />,
-    skills: ['NetApp', 'Isilon', '3Par', 'MySQL', 'PostgreSQL', 'Redis'],
+    category: 'Containers & Orchestration',
+    icon: Box,
+    skills: [
+      { name: 'Kubernetes', iconKey: 'Kubernetes' },
+      { name: 'Docker', iconKey: 'Docker' },
+      { name: 'Helm', iconKey: 'Helm' },
+      { name: 'Harbor', iconKey: 'Harbor' },
+      { name: 'Artifactory', iconKey: 'Jfrog' },
+    ],
   },
 ];
 
-const SkillsSection: React.FC<SkillsSectionProps> = ({ theme, categories = defaultCategories }) => {
-  const getSkillImage = (skill: string) => {
-    return `/resume/images/${skill.toLowerCase().replace(/[^a-z0-9]/g, '-')}.${skill.endsWith('.png') ? 'png' : 'svg'}`;
-  };
+// Row 2
+const row2: SkillCategory[] = [
+  {
+    category: 'CI/CD & GitOps',
+    icon: GitBranch,
+    skills: [
+      { name: 'GitLab CI', iconKey: 'Gitlab' },
+      { name: 'GitHub Actions', iconKey: 'Githubactions' },
+      { name: 'ArgoCD', iconKey: 'Argo' },
+      { name: 'Jenkins', iconKey: 'Jenkins' },
+      { name: 'Git', iconKey: 'Git' },
+    ],
+  },
+  {
+    category: 'AI & Tooling',
+    icon: Brain,
+    skills: [
+      { name: 'Claude Code', iconKey: 'Anthropic' },
+      { name: 'MCP Servers', iconKey: 'Anthropic' },
+      { name: 'Context Engineering', iconKey: '' },
+      { name: 'RAG', iconKey: '' },
+      { name: 'SDD', iconKey: '' },
+      { name: 'Agentic Workflows', iconKey: '' },
+    ],
+  },
+];
 
+// Row 3
+const row3: SkillCategory[] = [
+  {
+    category: 'IaC & Config Management',
+    icon: Wrench,
+    skills: [
+      { name: 'Terraform', iconKey: 'Terraform' },
+      { name: 'Vault', iconKey: 'Vault' },
+      { name: 'Puppet', iconKey: 'Puppet' },
+      { name: 'Chef', iconKey: 'Chef' },
+      { name: 'Ansible', iconKey: 'Ansible' },
+    ],
+  },
+  {
+    category: 'Observability',
+    icon: Gauge,
+    skills: [
+      { name: 'Prometheus', iconKey: 'Prometheus' },
+      { name: 'Grafana', iconKey: 'Grafana' },
+      { name: 'ELK Stack', iconKey: 'Elastic' },
+      { name: 'Loki', iconKey: 'Grafanaloki' },
+      { name: 'OpenTelemetry', iconKey: 'Opentelemetry' },
+    ],
+  },
+];
+
+// Row 4
+const row4: SkillCategory[] = [
+  {
+    category: 'Data & Messaging',
+    icon: Database,
+    skills: [
+      { name: 'MySQL', iconKey: 'Mysql' },
+      { name: 'MariaDB', iconKey: 'Mariadb' },
+      { name: 'PostgreSQL', iconKey: 'Postgresql' },
+      { name: 'Redis', iconKey: 'Redis' },
+      { name: 'Memcached', iconKey: 'Memcached' },
+      { name: 'Kafka', iconKey: 'Apachekafka' },
+      { name: 'RabbitMQ', iconKey: 'Rabbitmq' },
+    ],
+  },
+  {
+    category: 'Languages',
+    icon: Code,
+    skills: [
+      { name: 'Python', iconKey: 'Python' },
+      { name: 'Bash', iconKey: 'Gnubash' },
+      { name: 'Go', iconKey: 'Go' },
+      { name: 'PowerShell', iconKey: 'Powershell' },
+      { name: 'Perl', iconKey: 'Perl' },
+    ],
+  },
+];
+
+interface SkillCategory {
+  category: string;
+  icon: React.ElementType;
+  skills: { name: string; iconKey: string }[];
+}
+
+const allCategories = [...row1, ...row2, ...row3, ...row4];
+
+function SkillCard({ category, icon: Icon, skills }: SkillCategory) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {categories.map((category, index) => (
-        <div key={index} className={`skill-card ${theme === 'dark' ? 'bg-gray-800/30' : 'bg-white/90'}`}>
-          <div className="flex items-center gap-4 mb-8">
-            <div className="skill-icon-container">{category.icon}</div>
-            <h3 className="text-2xl font-bold text-orange-500">{category.title}</h3>
-          </div>
-
-          <div className="grid grid-cols-3 gap-6">
-            {category.skills.map((skill, idx) => (
-              <div
-                key={idx}
-                className={`group p-6 rounded-lg flex flex-col items-center justify-center gap-4 
-                  transition-all duration-300 hover:scale-105 hover:bg-orange-500/10 
-                  ${theme === 'dark' ? 'text-green-400' : 'text-gray-700'}`}
-              >
-                <div className="relative w-16 h-16 transform transition-transform duration-300 group-hover:-translate-y-1">
-                  <Image
-                    src={getSkillImage(skill)}
-                    alt={`${skill} logo`}
-                    fill
-                    className="object-contain filter group-hover:brightness-110"
-                    sizes="64px"
-                    onError={e => {
-                      // Fallback to a default icon or hide the image container
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-                <span className="text-xs md:text-sm text-center font-medium">{skill}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+    <div className="border border-[#30363d] bg-[#161b22] p-4 rounded">
+      <div className="flex items-center gap-2 mb-3">
+        <Icon className="w-5 h-5 text-[#64ffda]" />
+        <h3 className="text-[#00ffcc]">{category}</h3>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {skills.map(skill => {
+          const icon = getIcon(skill.iconKey);
+          return (
+            <span
+              key={skill.name}
+              className="px-2 py-1 bg-[#0d1117] border border-[#30363d] text-[#ccc] text-sm rounded flex items-center gap-2 hover:border-[#ff9500] transition-colors cursor-default"
+            >
+              {icon && (
+                <svg
+                  role="img"
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 flex-shrink-0"
+                  fill="currentColor"
+                  dangerouslySetInnerHTML={{ __html: icon.svg }}
+                />
+              )}
+              {skill.name}
+            </span>
+          );
+        })}
+      </div>
     </div>
+  );
+}
+
+const SkillsSection: React.FC = () => {
+  return (
+    <section>
+      <TerminalPrompt command="ls -la /skills" />
+      <div className="pl-4 md:pl-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        {allCategories.map(cat => (
+          <SkillCard key={cat.category} {...cat} />
+        ))}
+      </div>
+    </section>
   );
 };
 

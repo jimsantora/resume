@@ -1,17 +1,16 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import TerminalWindow from './TerminalWindow';
+import WindowChrome from './WindowChrome';
 import IntroSection from './IntroSection';
 import ExperienceSection from './ExperienceSection';
 import CreditsSection from './CreditsSection';
 import SkillsSection from './SkillsSection';
-import NavBar from './NavBar';
 
 export default function ResumePage() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [typedText, setTypedText] = useState('');
-  const introText = "Hello, I'm James Santora";
+  const introText = "Hello, I'm Jim Santora";
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentSection] = useState('default');
 
   useEffect(() => {
     if (currentIndex < introText.length) {
@@ -23,43 +22,38 @@ export default function ResumePage() {
     }
   }, [currentIndex]);
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
-
   return (
-    <div
-      className={`min-h-screen font-mono transition-colors duration-300 fixed inset-0 overflow-auto ${
-        theme === 'dark' ? 'bg-gray-900 text-green-400' : 'bg-gray-100 text-gray-800'
-      }`}
-    >
-      <NavBar theme={theme} toggleTheme={toggleTheme} currentSection={currentSection} />
+    <WindowChrome>
+      <div className="space-y-8 md:space-y-12">
+        <IntroSection typedText={typedText} />
+        <SkillsSection />
+        <ExperienceSection />
+        <CreditsSection />
 
-      <div className="container mx-auto px-4 pt-24">
-        <div data-section="intro">
-          <TerminalWindow title="~ intro.sh" sectionId="intro">
-            <IntroSection typedText={typedText} theme={theme} />
-          </TerminalWindow>
-        </div>
-
-        <div data-section="intro">
-          <TerminalWindow title="~ skills.sh" sectionId="skills">
-            <SkillsSection theme={theme} />
-          </TerminalWindow>
-        </div>
-
-        <div data-section="experience">
-          <TerminalWindow title="~ experience.sh" sectionId="experience">
-            <ExperienceSection />
-          </TerminalWindow>
-        </div>
-
-        <div data-section="game-credits">
-          <TerminalWindow title="~ game-credits.sh" sectionId="game-credits">
-            <CreditsSection theme={theme} />
-          </TerminalWindow>
+        {/* Terminal footer */}
+        <div className="pt-8 border-t border-[#30363d] text-sm space-y-1">
+          <p className="flex items-center gap-2">
+            <span className="text-[#00ffcc]">➜</span>
+            <span className="text-[#64ffda]">~</span>
+            <span className="text-[#ff9500]">$</span>
+            <span className="text-[#ccc]">sudo shutdown -h now</span>
+          </p>
+          <p className="text-[#888]">
+            Reticulating splines... [<span className="text-[#888]">███████████████████</span><span className="text-[#888] animate-pulse">█</span>]{' '}
+            <span className="animate-pulse">100%</span>
+          </p>
+          <p className="text-[#888]">
+            Last login:{' '}
+            {new Date().toLocaleDateString('en-US', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </p>
         </div>
       </div>
-    </div>
+    </WindowChrome>
   );
 }

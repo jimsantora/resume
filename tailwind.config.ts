@@ -7,18 +7,7 @@ const config: Config = {
     './styles/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {
-      colors: {
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-      },
-      fontFamily: {
-        gaming: ['Chakra Petch', 'sans-serif'],
-        syne: ['var(--font-syne)'],
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };
