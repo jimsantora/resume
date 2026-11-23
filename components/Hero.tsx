@@ -69,7 +69,7 @@ export function Hero() {
             {current.title}, {current.company}
           </dd>
           <dt className="text-dim">Since</dt>
-          <dd className="text-fg">{since}, across gaming, media and ad-tech</dd>
+          <dd className="text-fg">{since}</dd>
           <dt className="text-dim">Shipped</dt>
           <dd className="text-fg">{credits.length} game credits</dd>
           <dt className="text-dim">Previously</dt>

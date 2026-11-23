@@ -15,7 +15,7 @@ Two audiences, weighted equally:
 
 ## Product Purpose
 
-A personal, public resume site for Jim Santora, a Staff Engineer (Platform & Site Reliability; currently Staff DevOps Engineer at 2K Games since Jun 2026) with 20+ years across gaming, media, and ad-tech. Success means a visitor leaves knowing who Jim is, what he has run at scale, which titles he shipped, and how to reach his profiles, and remembers the site as distinctive without its being gimmicky.
+A personal, public resume site for Jim Santora, a Staff Engineer (Platform & Site Reliability; currently Staff DevOps Engineer at 2K Games since 2026) with 25 years across gaming, media, and ad-tech. Success means a visitor leaves knowing who Jim is, what he has run at scale, which titles he shipped, and how to reach his profiles, and remembers the site as distinctive without its being gimmicky.
 
 ## Positioning
 
@@ -44,7 +44,7 @@ A clean, readable engineer's resume first, with a k9s-style terminal version as 
 ## Evidence on Hand
 
 - All resume content lives in `lib/resume.ts`: profile, links, about text, skills, full work history 2001–present, 15 game credits. Box art: `public/images/*.jpg`.
-- 2K Games role is title-only by choice (no bullets yet).
+- Dates are years only, everywhere (no months).
 - No PDF resume, no testimonials, no metrics beyond those in the job bullets. Do not invent any.
 
 ## Product Principles

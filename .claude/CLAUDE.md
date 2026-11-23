@@ -11,10 +11,10 @@ Docs live in `docs/`: `PRODUCT.md` (audience, positioning, principles), `GUIDELI
 
 - **All resume content lives in `lib/resume.ts`**: profile and pitch, links, `about` paragraphs, specialties, skills, jobs, credits.
   - `about[0]` appears in the hero (under the pitch); `about[1..]` appear in the About section.
-  - The newest job (2K Games) intentionally has no bullets; the site shows "Current role" for it.
+  - A job with no bullets shows a "Current role" tag on the site (if it is the newest) and `highlights []` in the TUI.
   - Credit titles are stored ALL CAPS; `displayTitle()` formats them.
 - **A little copy lives outside `lib/resume.ts`**:
-  - `components/Hero.tsx`: the hero facts' "across gaming, media and ad-tech".
+  - `components/Hero.tsx`: the hero facts' labels (Now, Since, Shipped, Previously).
   - `components/TerminalVersion.tsx`: the section blurb and its "Rust, Ratatui, WebAssembly" note.
   - Section notes such as "9 roles since 2001" are computed from the data.
 - **The TUI has its own generated copy of the content.** After any change to `lib/resume.ts` or the box art in `public/images/`, run:
