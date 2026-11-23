@@ -6,6 +6,10 @@ on:
 permissions:
   contents: write
 
+env:
+  # Same trunk as local builds; bump deliberately.
+  TRUNK_VERSION: v0.22.1
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,9 +29,34 @@ jobs:
             out
           key: ${{ runner.os }}-deploy-${{ hashFiles('**/package-lock.json') }}
 
+      # Terminal version (tui/): Rust -> WebAssembly via trunk, served at /resume/tui/.
+      - name: Install Rust (wasm32 target)
+        run: rustup toolchain install stable --profile minimal --target wasm32-unknown-unknown
+
+      - name: Install trunk
+        run: |
+          base="https://github.com/trunk-rs/trunk/releases/download/${TRUNK_VERSION}"
+          asset="trunk-x86_64-unknown-linux-gnu.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$asset" "$base/$asset"
+          curl -fsSL -o "$RUNNER_TEMP/$asset.sha256" "$base/$asset.sha256"
+          echo "$(awk '{print $1}' "$RUNNER_TEMP/$asset.sha256")  $RUNNER_TEMP/$asset" | sha256sum -c -
+          mkdir -p "$HOME/.local/bin"
+          tar -xzf "$RUNNER_TEMP/$asset" -C "$HOME/.local/bin" trunk
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Cache Rust build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            tui/target
+          key: ${{ runner.os }}-tui-${{ hashFiles('tui/Cargo.lock') }}
+
       - name: Install & Build
         run: |
           npm ci
+          npm run tui:build   # writes public/tui, which next export copies to out/tui
           npm run build
 
       - name: Deploy

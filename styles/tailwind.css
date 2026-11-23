@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  /* Browser surfaces take the palette too. */
+  scrollbar-color: #232b38 #0b0e14;
+  caret-color: #00e5c0;
+}
+
+::selection {
+  background: #ff9500;
+  color: #0b0e14;
+}
+
+/* One visible focus treatment for every link, button and disclosure. */
+:focus-visible {
+  outline: 2px solid #00e5c0;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* <details> disclosure: hide the default marker, we draw our own. */
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}

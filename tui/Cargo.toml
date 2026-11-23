@@ -1,0 +1,23 @@
+[package]
+name = "resume-tui"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# k9s-style resume TUI. Runs in the browser via Ratzilla (WebGL2); SSH later via russh.
+# Run: `trunk serve --open`. Pages build: `trunk build --release --public-url /resume/tui/`.
+[dependencies]
+console_error_panic_hook = "0.1.7"
+critical-section = { version = "1.2.0", features = ["std"] }
+js-sys = "0.3.107"
+ratzilla = "0.3.1"
+tui-big-text = "0.8.10"
+wasm-bindgen = "0.2.130"
+wasm-bindgen-futures = "0.4.80"
+web-sys = { version = "0.3.107", features = ["FontFaceSet", "Document", "Window", "HtmlElement", "CssStyleDeclaration", "Element", "console"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
