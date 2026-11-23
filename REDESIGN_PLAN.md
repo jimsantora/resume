@@ -1,6 +1,21 @@
 # Resume restart: TUI theme
 
-Status (2026-11-23): Jim liked C's readability (but not its pastels or its weak reference) and B's k9s recognisability (but not its style). Built **D: hybrid** (`prototypes/d-hybrid.html`), which is C's layout in k9s's marks with saturated night/day skins. Waiting on feedback.
+Status (2026-11-23): **direction changed, awaiting go-ahead.** Prototypes A–D taught us that "recognisable TUI", "stylish" and "readable resume" pull against each other on one web page, and a look alone doesn't engage anyone. Goal (Jim): visitors in general should get interested in him and his career, and be delighted by the design.
+
+## New direction: one real TUI, shipped two ways, plus a stylish website
+
+1. **The TUI app** (Go + bubbletea/lipgloss). A real program and the single home of the terminal aesthetic, free to look exactly like k9s/lazygit. It reads content generated from `lib/resume.ts` (JSON export), so there's one source of truth.
+2. **Over SSH** (charm `wish`): `ssh <domain>`. Needs a domain and a host with a public IP (homelab with a port-forward, or a small VM / Fly.io). Until there's a domain, test it locally (`ssh localhost -p 23234`).
+3. **In the browser**: the same app compiled to WASM and rendered in xterm.js, as the website's hero, so every visitor can drive the real thing without a terminal. Risk: bubbletea-in-WASM needs custom stdin/stdout wiring. Spike it first, and fall back to an asciinema recording of the real app.
+4. **The website** (Next.js static, GitHub Pages): stylish, readable, crawlable resume. The live terminal is the hero, "or run `ssh …` in your own terminal" is the hook, and the full resume follows as plain HTML for scanners and no-JS. The prototypes (C's readability, D's k9s marks) feed the page styling.
+
+Order: (1) build the TUI locally, then (3) the WASM spike, then (4) the website, then (2) SSH once there's a domain. Prereq: Go from the official go.dev .pkg (Intel Mac, no Homebrew).
+
+Domain: not bought yet. Only step 2 needs it. Suggest something like a .dev/.com name via an at-cost registrar; GitHub Pages can use it too.
+
+## Earlier status
+
+Jim liked C's readability (not its pastels or weak reference) and B's k9s recognisability (not its style). D (hybrid) was nice, but still not recognisable or engaging.
 
 ## Context
 
