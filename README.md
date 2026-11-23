@@ -9,6 +9,8 @@ A personal resume site in two forms, built from one content file (`lib/resume.ts
 - **The terminal version** (`/resume/tui/`): the same resume as a k9s-style terminal app, written in Rust with
   [Ratatui](https://ratatui.rs) and running in the browser via [Ratzilla](https://github.com/orhun/ratzilla) (WebAssembly).
 
+Project docs live in [`docs/`](docs/): product brief, complexity guidelines and the redesign history.
+
 ## Tech Stack
 
 - **Site**: [Next.js](https://nextjs.org) static export, TypeScript, [Tailwind CSS](https://tailwindcss.com),

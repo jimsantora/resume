@@ -31,7 +31,7 @@ A clean, readable engineer's resume first, with a k9s-style terminal version as 
 - Next.js static export (`output: 'export'`), TypeScript, Tailwind CSS. No server, no API routes, no runtime secrets: everything must work as static files on GitHub Pages.
 - Full resume content must be pre-rendered HTML, readable without JavaScript and by crawlers.
 - Confirmed interactivity: an **optional** client-side command prompt layered on top of the static page (e.g. `help`, `whoami`, `ls`, `cat`, `open github`) for navigating and revealing content. It is self-contained, needs no storage, and never gates content.
-- Guidelines.md governs complexity: favor static content and CSS, keep interactive pieces simple and self-contained, avoid cross-component state, browser storage, and timing-dependent behavior.
+- `docs/GUIDELINES.md` governs complexity: favor static content and CSS, keep interactive pieces simple and self-contained, avoid cross-component state, browser storage, and timing-dependent behavior.
 
 ## Brand Commitments
 

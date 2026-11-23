@@ -68,14 +68,14 @@ The Nov 2026 terminal/TUI redesign (branch `worktree-terminal-redesign`, unpushe
 - No fake shell output (no invented commands, commit hashes, `finger`, etc.). Anything that looks interactive must do something.
 - Mouse-first. Keyboard is a bonus, with a small interaction budget: select, switch view, go back. No command line, pager or fuzzy finder.
 - Pick a deliberate visual world, not GitHub-dark plus amber/green. Fonts should read as clearly monospace without being wide (Martian Mono was disliked).
-- Follow Guidelines.md: static first, CSS over JS, small isolated pieces.
+- Follow `docs/GUIDELINES.md`: static first, CSS over JS, small isolated pieces.
 
 Reference TUIs Jim named: **lazygit, k9s, bubbletea**.
 
 ## What's on this branch (`worktree-tui-restart`, off `main`)
 
 - `lib/resume.ts`: the content model carried over from the old branch (2K Games Staff DevOps role since Jun 2026; Epic ends Jun 2026; title "Staff Engineer").
-- `PRODUCT.md`: audience, constraints, brand commitments. Never publish email or phone; links only.
+- `docs/PRODUCT.md`: audience, constraints, brand commitments. Never publish email or phone; links only.
 - `public/images/`: box art. Some `.jpg` files are actually WebP (fifa-18, fortnite) or PNG (pvz-gw2, star-wars-squadrons). Re-encode or rename them in the real build.
 - `prototypes/`: standalone, framework-free HTML. Open `prototypes/index.html` in a browser.
   - `a-panels.html`: after lazygit. Numbered stacked panels plus a detail pane. JetBrains Mono, blue-ink ground, green active border.

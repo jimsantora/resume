@@ -5,7 +5,7 @@ Personal resume for Jim Santora at `jimsantora.github.io/resume` (base path `/re
 - **The site**: Next.js static export (TypeScript, Tailwind), server components, readable without JavaScript.
 - **The terminal version** (`tui/`, served at `/resume/tui/`): the same resume as a k9s-style terminal app in Rust (Ratatui), running in the browser via Ratzilla (WebAssembly). It's opt-in, linked from the header button and the "Terminal version" section only.
 
-`PRODUCT.md` has the audience and principles; `README.md` has setup. `REDESIGN_PLAN.md` is the history of how the design got here.
+Docs live in `docs/`: `PRODUCT.md` (audience, positioning, principles), `GUIDELINES.md` (complexity rules) and `REDESIGN_PLAN.md` (history of how the design got here). `README.md` at the root has setup.
 
 ## Editing content
 
@@ -28,7 +28,7 @@ Personal resume for Jim Santora at `jimsantora.github.io/resume` (base path `/re
   - In a git worktree whose `node_modules` is a symlink, Node may not resolve `typescript`: prefix with `NODE_PATH=<main checkout>/node_modules`.
 - **If credits or roles change visibly**, `public/images/tui-preview.png` (a real screenshot of the TUI's credits view, shown in the Terminal version section) goes stale. Re-capture it at 1200×760 CSS px, 2× scale, with the credits view open, downscaled to 1280 px wide.
 
-## Content rules (from PRODUCT.md)
+## Content rules (from docs/PRODUCT.md)
 
 - **Never publish an email address or phone number.** Contact is links only: GitHub and LinkedIn.
 - Voice: first person, plainspoken, dry humor.
@@ -51,7 +51,7 @@ Personal resume for Jim Santora at `jimsantora.github.io/resume` (base path `/re
 - The main site is a normal, readable resume. **No terminal costume** on it: no fake shell commands as headings, fake output, window chrome or scanlines. The terminal experience lives in the TUI.
 - Keep the look: dark ink ground, JetBrains Mono for headings/labels/data, IBM Plex Sans for prose, orange name, aqua accents (tokens in `tailwind.config.ts`). The hero art is the pixel-art cover mosaic (`components/HeroArt.tsx`).
 - The main info (name through the GitHub/LinkedIn buttons) should fit on the first screen at 1280×720 and on a 390×844 phone.
-- Guidelines.md applies: favor static content and CSS; keep interactive pieces small and isolated. The only client component on the site is the nav's current-section highlight (`components/NavLinks.tsx`).
+- `docs/GUIDELINES.md` applies: favor static content and CSS; keep interactive pieces small and isolated. The only client component on the site is the nav's current-section highlight (`components/NavLinks.tsx`).
 
 ## Deploy
 
