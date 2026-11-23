@@ -19,21 +19,20 @@ export default function NavLinks() {
   useEffect(() => {
     const sections = NAV.map(n => document.getElementById(n.id)).filter((el): el is HTMLElement => !!el);
     if (!sections.length) return;
-    // A section counts as current while it crosses a band just under the fixed header.
-    const observer = new IntersectionObserver(
-      entries => {
-        for (const e of entries) {
-          if (e.isIntersecting) setActive(e.target.id);
-        }
-      },
-      { rootMargin: '-56px 0px -70% 0px' },
-    );
-    sections.forEach(s => observer.observe(s));
-    const onTop = () => window.scrollY < 120 && setActive(null);
-    window.addEventListener('scroll', onTop, { passive: true });
+    // Current section: the last one whose top has scrolled up past a line just under the
+    // 44px header. Four rect reads per scroll event is cheap enough not to throttle.
+    const update = () => {
+      const line = 80;
+      let current: string | null = null;
+      for (const s of sections) if (s.getBoundingClientRect().top <= line) current = s.id;
+      setActive(current);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
     return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', onTop);
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
     };
   }, []);
 
