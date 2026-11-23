@@ -10,7 +10,7 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-6 border-t border-line">
+    <section id={id} className="scroll-mt-11 border-t border-line">
       <div className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-20">
         <div className="mb-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h2 className="font-mono text-2xl font-bold tracking-tight text-balance md:text-3xl">{title}</h2>

@@ -6,7 +6,8 @@ export default function About() {
     <Section id="about" title="About">
       <div className="grid gap-10 lg:grid-cols-[1fr_16rem]">
         <div className="max-w-[68ch] space-y-5 text-lg leading-relaxed text-fg/90">
-          {about.map(p => (
+          {/* The first paragraph opens the hero. */}
+          {about.slice(1).map(p => (
             <p key={p.slice(0, 24)}>{p}</p>
           ))}
         </div>

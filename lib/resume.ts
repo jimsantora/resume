@@ -216,6 +216,24 @@ export function jobSlug(job: Job): string {
   return `${company}-${job.period.match(/\d{4}/)?.[0] ?? ''}`;
 }
 
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+/**
+ * A period like "2022 – Jun 2026" or "Jun 2026 – present" as fractional years [start, end].
+ * A bare year starts at its beginning and ends at its end; "present" is `now`.
+ */
+export function periodRange(period: string, now: Date = new Date()): [number, number] {
+  const [a, b = a] = period.split('–').map(s => s.trim());
+  const point = (s: string, end: boolean) => {
+    if (/present/i.test(s)) return now.getFullYear() + now.getMonth() / 12;
+    const year = Number(s.match(/\d{4}/)?.[0] ?? 0);
+    const m = MONTHS.findIndex(mo => s.toLowerCase().includes(mo));
+    if (m >= 0) return year + m / 12;
+    return end ? year + 1 : year;
+  };
+  return [point(a, false), point(b, true)];
+}
+
 /** Title-case display for ALL-CAPS game titles, keeping known acronyms. */
 export function displayTitle(t: string): string {
   const keep = new Set(['FIFA', 'NFL', 'II']);
