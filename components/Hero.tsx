@@ -1,7 +1,7 @@
 import { Linkedin, SquareTerminal } from 'lucide-react';
 import { siGithub } from 'simple-icons';
 import { about, credits, jobs, links, profile } from '@/lib/resume';
-import HeroArt, { type HeroArtKind } from './HeroArt';
+import HeroArt from './HeroArt';
 import NavLinks from './NavLinks';
 
 // index.html explicitly: next dev doesn't serve directory indexes from public/.
@@ -41,7 +41,7 @@ export function SiteHeader() {
   );
 }
 
-export function Hero({ art = 'trace' }: { art?: HeroArtKind }) {
+export function Hero() {
   const current = jobs[0];
   const previous = profile.employers.filter(e => e !== current.company);
   const since = jobs[jobs.length - 1].period.match(/\d{4}/)?.[0];
@@ -97,7 +97,7 @@ export function Hero({ art = 'trace' }: { art?: HeroArtKind }) {
       </div>
 
       <div className="hidden lg:block">
-        <HeroArt kind={art} />
+        <HeroArt />
       </div>
     </section>
   );
