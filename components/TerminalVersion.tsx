@@ -13,9 +13,9 @@ export default function TerminalVersion() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/resume/images/tui-preview.png"
-          alt="Open the terminal version. Its game credits view: a k9s-style table with FIFA 22 selected and a pixel-art cover beside it"
+          alt="Open the terminal version. Its game credits view: a k9s-style table with Battlefield 2042 selected and a pixel-art cover beside it"
           width={1280}
-          height={469}
+          height={811}
           loading="lazy"
           className="block w-full"
         />
