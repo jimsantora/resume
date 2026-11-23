@@ -2,6 +2,7 @@
 
 mod app;
 mod content;
+mod covers;
 mod ui;
 
 use std::{cell::RefCell, io, rc::Rc};

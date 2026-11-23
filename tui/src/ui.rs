@@ -2,14 +2,17 @@
 //! set in the border, a YAML-ish describe view, and crumbs along the bottom.
 
 use ratzilla::ratatui::{
-    layout::{Constraint, Layout, Rect},
+    layout::{Constraint, Layout, Margin, Rect},
     style::{Color, Style, Stylize},
     text::{Line, Span},
     widgets::{Block, Cell, Paragraph, Row, Table, TableState},
     Frame,
 };
 
+use tui_big_text::{BigText, PixelSize};
+
 use crate::app::{age, used_at, Action, App, View};
+use crate::covers;
 use crate::content::{ABOUT, CREDITS, EMPLOYERS, GITHUB, JOBS, LINKEDIN, PROFILE, SKILLS, SPECIALTIES};
 
 /// k9s default skin.
@@ -33,44 +36,91 @@ fn display_url(url: &'static str) -> &'static str {
     s.strip_prefix("www.").unwrap_or(s)
 }
 
-const LOGO: [&str; 6] = [
-    r"   _ _           ",
-    r"  (_|_)_ __ ___  ",
-    r"  | | | '_ ` _ \ ",
-    r"  | | | | | | | |",
-    r" _/ |_|_| |_| |_|",
-    r"|__/             ",
-];
+/// "Jim Santora" drawn with tui-big-text in quadrant pixels: 4 columns x 4 rows per letter.
+const NAME_W: u16 = 44;
+const NAME_H: u16 = 4;
+/// Two hotkey columns of 17 plus a 3-column gap.
+const MENU_W: u16 = 37;
+const INFO_W: u16 = 46;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum HeaderMode {
+    /// Window too short: no header at all.
+    Hidden,
+    /// Phone width: a few info lines and one row of view keys.
+    Compact,
+    /// Medium width: big name on its own band above info + hotkeys.
+    Stacked,
+    /// Wide: info, hotkeys and big name side by side, like k9s.
+    Wide,
+}
 
 pub fn draw(f: &mut Frame, app: &mut App) {
     app.hits.clear();
-    let area = f.area();
-    f.render_widget(Block::new().bg(skin::BG), area);
+    let full = f.area();
+    f.render_widget(Block::new().bg(skin::BG), full);
 
-    let wide = area.width >= 100;
-    let header_h = match (area.height, area.width) {
-        (h, _) if h < 24 => 0,
-        (_, w) if w < 72 => 5,
-        _ => 7,
+    // Breathing room around the whole UI, except on very small screens.
+    let area = if full.width >= 60 && full.height >= 20 { full.inner(Margin::new(2, 1)) } else { full };
+
+    let mode = match (area.width, area.height) {
+        (_, h) if h < 24 => HeaderMode::Hidden,
+        (w, _) if w < 72 => HeaderMode::Compact,
+        (w, h) if w < INFO_W + 4 + MENU_W + 4 + NAME_W && h >= 34 => HeaderMode::Stacked,
+        (w, _) if w < INFO_W + 4 + MENU_W + 4 + NAME_W => HeaderMode::Compact,
+        _ => HeaderMode::Wide,
     };
-    let [header, main, crumbs] =
-        Layout::vertical([Constraint::Length(header_h), Constraint::Min(4), Constraint::Length(1)]).areas(area);
+    let header_h = match mode {
+        HeaderMode::Hidden => 0,
+        HeaderMode::Compact => 5,
+        HeaderMode::Stacked => NAME_H + 1 + 6,
+        HeaderMode::Wide => 6,
+    };
+    let gap = u16::from(header_h > 0);
+    let [header, _, main, crumbs] = Layout::vertical([
+        Constraint::Length(header_h),
+        Constraint::Length(gap),
+        Constraint::Min(4),
+        Constraint::Length(1),
+    ])
+    .areas(area);
 
-    if header_h > 0 {
-        draw_header(f, app, header, wide);
+    if mode != HeaderMode::Hidden {
+        draw_header(f, app, header, mode);
     }
     if app.describing() {
         draw_describe(f, app, main);
+    } else if app.view == View::Credits && main.width >= 90 {
+        // Credits: table plus a cover panel that follows the hovered (or selected) row.
+        let cover_w = (cover_size(main.height.saturating_sub(6), u16::MAX).0 + 4).max(30);
+        let [table_a, cover_a] =
+            Layout::horizontal([Constraint::Min(40), Constraint::Length(cover_w)]).areas(main);
+        let shown = draw_table(f, app, table_a);
+        draw_cover_panel(f, app, cover_a, shown);
     } else {
         draw_table(f, app, main);
     }
     draw_crumbs(f, app, crumbs);
 }
 
+fn big_name() -> BigText<'static> {
+    BigText::builder()
+        .pixel_size(PixelSize::Quadrant)
+        .style(Style::new().fg(skin::ORANGE))
+        .lines(vec![Line::from(PROFILE.name)])
+        .build()
+}
+
 // ---------------------------------------------------------------- header
 
-fn draw_header(f: &mut Frame, app: &mut App, area: Rect, wide: bool) {
-    let narrow = area.height < 7;
+fn draw_header(f: &mut Frame, app: &mut App, area: Rect, mode: HeaderMode) {
+    let compact = mode == HeaderMode::Compact;
+    let mut area = area;
+    if mode == HeaderMode::Stacked {
+        f.render_widget(big_name(), Rect::new(area.x, area.y, NAME_W.min(area.width), NAME_H));
+        area = Rect { y: area.y + NAME_H + 1, height: area.height - NAME_H - 1, ..area };
+    }
+
     let career = format!(
         "{}y · {} roles · {} shipped games",
         (app.now - 2001.0).round() as i32,
@@ -81,33 +131,33 @@ fn draw_header(f: &mut Frame, app: &mut App, area: Rect, wide: bool) {
     let val = |v: String| Span::styled(v, Style::new().fg(skin::FG).bold());
     let link = |u: &'static str| Span::styled(display_url(u), Style::new().fg(skin::FG).underlined());
 
-    let mut info = vec![
-        Line::from(vec![label("Name:"), val(PROFILE.name.into())]),
-        Line::from(vec![label("Role:"), val(PROFILE.title.into())]),
-    ];
-    if !narrow {
+    // The big name replaces the Name: line except on phones.
+    let mut info = Vec::new();
+    if compact {
+        info.push(Line::from(vec![label("Name:"), val(PROFILE.name.into())]));
+    }
+    info.push(Line::from(vec![label("Role:"), val(PROFILE.title.into())]));
+    if !compact {
         info.push(Line::from(vec![label("Focus:"), val(PROFILE.discipline.into())]));
     }
     info.push(Line::from(vec![label("Now:"), val(JOBS[0].company.into())]));
-    if !narrow {
+    if !compact {
         info.push(Line::from(vec![label("Career:"), val(career)]));
     }
     let mut links = vec![(info.len() as u16, GITHUB)];
     info.push(Line::from(vec![label("GitHub:"), link(GITHUB)]));
-    if !narrow {
+    if !compact {
         links.push((info.len() as u16, LINKEDIN));
         info.push(Line::from(vec![label("LinkedIn:"), link(LINKEDIN)]));
     }
 
-    // Space priority: info, then both hotkey columns, then the logo.
-    let info_w = 52.min(area.width);
-    let menu_need = 2 + 2 * 17 + 2;
-    let logo_need = LOGO[0].len() as u16 + 1;
-    let logo_w = if wide && area.width >= info_w + menu_need + logo_need { logo_need } else { 0 };
-    let [info_a, menu_a, logo_a] = Layout::horizontal([
-        Constraint::Length(info_w),
-        Constraint::Min(0),
-        Constraint::Length(logo_w),
+    let name_w = if mode == HeaderMode::Wide { NAME_W } else { 0 };
+    let [info_a, _, menu_a, _, name_a] = Layout::horizontal([
+        Constraint::Length(INFO_W.min(area.width)),
+        Constraint::Length(4),
+        Constraint::Length(MENU_W),
+        Constraint::Fill(1),
+        Constraint::Length(name_w),
     ])
     .areas(area);
     f.render_widget(Paragraph::new(info), info_a);
@@ -116,17 +166,14 @@ fn draw_header(f: &mut Frame, app: &mut App, area: Rect, wide: bool) {
         app.hits.push((Rect::new(info_a.x + 10, info_a.y + row, w, 1), Action::Link(url)));
     }
 
-    // Hotkeys: two columns like k9s. Each one is clickable.
+    // Hotkeys, k9s-style. Each one is clickable.
     let views: Vec<(String, &str, Action)> = View::ALL
         .iter()
         .enumerate()
         .map(|(i, v)| (format!("<{}>", i + 1), v.name(), Action::Show(*v)))
         .collect();
-    let mut cmds: Vec<(String, &str, Action)> = vec![("<enter>".into(), "describe", Action::Describe)];
-    cmds.push(("<esc>".into(), "back", Action::Back));
-    cmds.push(("<j/k>".into(), "down/up", Action::Down));
 
-    if narrow || menu_a.width < 20 {
+    if compact {
         // One row of view keys under the info block.
         let y = area.y + area.height - 1;
         let mut x = area.x;
@@ -144,25 +191,27 @@ fn draw_header(f: &mut Frame, app: &mut App, area: Rect, wide: bool) {
         return;
     }
 
+    let cmds: Vec<(String, &str, Option<Action>)> = vec![
+        ("<enter>".into(), "describe", Some(Action::Describe)),
+        ("<esc>".into(), "back", Some(Action::Back)),
+        ("<j/k>".into(), "down/up", None),
+    ];
     let col_w = 17u16;
-    for (col, items) in [&views, &cmds].into_iter().enumerate() {
-        let x = menu_a.x + 2 + col as u16 * (col_w + 2);
-        if x + col_w > menu_a.x + menu_a.width {
-            break;
-        }
-        for (row, (k, name, action)) in items.iter().enumerate() {
-            let r = Rect::new(x, menu_a.y + row as u16, col_w, 1);
-            let active = col == 0 && app.view.name() == *name;
-            f.render_widget(Paragraph::new(menu_item(k, name, active, col == 0)), r);
-            if *k != "<j/k>" {
-                app.hits.push((r, *action));
-            }
+    for (row, (k, name, action)) in views.iter().enumerate() {
+        let r = Rect::new(menu_a.x, menu_a.y + row as u16, col_w, 1);
+        f.render_widget(Paragraph::new(menu_item(k, name, app.view.name() == *name, true)), r);
+        app.hits.push((r, *action));
+    }
+    for (row, (k, name, action)) in cmds.iter().enumerate() {
+        let r = Rect::new(menu_a.x + col_w + 3, menu_a.y + row as u16, col_w, 1);
+        f.render_widget(Paragraph::new(menu_item(k, name, false, false)), r);
+        if let Some(a) = action {
+            app.hits.push((r, *a));
         }
     }
 
-    if logo_w > 0 {
-        let lines: Vec<Line> = LOGO.iter().map(|l| Line::from(*l).fg(skin::ORANGE).bold()).collect();
-        f.render_widget(Paragraph::new(lines), logo_a);
+    if name_w > 0 {
+        f.render_widget(big_name(), Rect::new(name_a.x, name_a.y, NAME_W, NAME_H));
     }
 }
 
@@ -191,7 +240,8 @@ fn t<'a>(s: impl Into<String>, c: Color) -> Span<'a> {
 
 // ---------------------------------------------------------------- table view
 
-fn draw_table(f: &mut Frame, app: &mut App, area: Rect) {
+/// Draws the resource table. Returns the row under the mouse, or the selected row.
+fn draw_table(f: &mut Frame, app: &mut App, area: Rect) -> usize {
     let view = app.view;
     let block = frame(vec![
         t(format!(" {}(", view.name()), skin::AQUA),
@@ -313,6 +363,83 @@ fn draw_table(f: &mut Frame, app: &mut App, area: Rect) {
         let r = Rect::new(inner.x, inner.y + 1 + (i - offset) as u16, inner.width, 1);
         app.hits.push((r, Action::Open(i)));
     }
+    hover_row.filter(|&r| r < view.len() && r < offset + visible).unwrap_or(sel)
+}
+
+// ---------------------------------------------------------------- covers
+
+/// Largest cover (cols, rows) that fits, keeping the 3:4 aspect. Half-block pixels are about
+/// square, so one cell is one pixel wide and two pixels tall. Capped at native size.
+fn cover_size(max_rows: u16, max_cols: u16) -> (u16, u16) {
+    let max_rows = max_rows.min((covers::H / 2) as u16);
+    let w = ((max_rows as usize * 2 * covers::W / covers::H) as u16).min(max_cols).max(1);
+    let px_h = w as usize * covers::H / covers::W;
+    (w, px_h.div_ceil(2) as u16)
+}
+
+/// Average colour of the source pixels that map onto target pixel (x, y) of a tw x th image.
+fn sample(px: &[u8], x: usize, y: usize, tw: usize, th: usize) -> Color {
+    let (x0, y0) = (x * covers::W / tw, y * covers::H / th);
+    let x1 = ((x + 1) * covers::W / tw).max(x0 + 1).min(covers::W);
+    let y1 = ((y + 1) * covers::H / th).max(y0 + 1).min(covers::H);
+    let (mut r, mut g, mut b, mut n) = (0u32, 0u32, 0u32, 0u32);
+    for sy in y0..y1 {
+        for sx in x0..x1 {
+            let i = (sy * covers::W + sx) * 3;
+            r += px[i] as u32;
+            g += px[i + 1] as u32;
+            b += px[i + 2] as u32;
+            n += 1;
+        }
+    }
+    Color::Rgb((r / n) as u8, (g / n) as u8, (b / n) as u8)
+}
+
+/// Paints a cover into `r` with half blocks: each cell's top pixel is the foreground of "▀",
+/// its bottom pixel the background.
+fn draw_cover(f: &mut Frame, slug: &str, r: Rect) {
+    let Some(px) = covers::cover(slug) else { return };
+    let tw = r.width as usize;
+    let th = tw * covers::H / covers::W;
+    let buf = f.buffer_mut();
+    for cy in 0..r.height as usize {
+        let (top_y, bot_y) = (cy * 2, cy * 2 + 1);
+        if top_y >= th {
+            break;
+        }
+        for cx in 0..tw {
+            let top = sample(px, cx, top_y, tw, th);
+            let bot = if bot_y < th { sample(px, cx, bot_y, tw, th) } else { skin::BG };
+            if let Some(cell) = buf.cell_mut((r.x + cx as u16, r.y + cy as u16)) {
+                cell.set_symbol("▀").set_fg(top).set_bg(bot);
+            }
+        }
+    }
+}
+
+/// Framed cover preview beside the credits table, with title and credit underneath.
+fn draw_cover_panel(f: &mut Frame, app: &mut App, area: Rect, i: usize) {
+    let c = &CREDITS[i];
+    let block = frame(vec![
+        t(" cover(", skin::AQUA),
+        t(ellipsize(c.slug, (area.width as usize).saturating_sub(12)), skin::PAPAYA),
+        t(") ", skin::AQUA),
+    ]);
+    let inner = block.inner(area);
+    f.render_widget(block, area);
+
+    let (cw, ch) = cover_size(inner.height.saturating_sub(4), inner.width.saturating_sub(2));
+    let r = Rect::new(inner.x + (inner.width.saturating_sub(cw)) / 2, inner.y + 1, cw, ch);
+    draw_cover(f, c.slug, r);
+    app.hits.push((r, Action::Open(i)));
+
+    let w = inner.width.saturating_sub(2) as usize;
+    let caption = vec![
+        Line::from(ellipsize(c.title, w)).fg(skin::FG).bold().centered(),
+        Line::from(ellipsize(&format!("{} · {}", c.year, c.role), w)).fg(skin::DIM).centered(),
+    ];
+    let cap = Rect::new(inner.x, r.bottom() + 1, inner.width, 2).intersection(inner);
+    f.render_widget(Paragraph::new(caption), cap);
 }
 
 // ---------------------------------------------------------------- describe view
@@ -332,6 +459,20 @@ fn draw_describe(f: &mut Frame, app: &mut App, area: Rect) {
     let inner = block.inner(area);
     f.render_widget(block, area);
     let inner = Rect { x: inner.x + 1, width: inner.width.saturating_sub(2), ..inner };
+    let mut cover_at: Option<Rect> = None;
+    let inner = if view == View::Credits {
+        if inner.width >= 60 {
+            let (cw, ch) = cover_size(inner.height, inner.width / 2);
+            cover_at = Some(Rect::new(inner.x, inner.y, cw, ch));
+            Rect { x: inner.x + cw + 3, width: inner.width.saturating_sub(cw + 3), ..inner }
+        } else {
+            let (cw, ch) = cover_size(inner.height.saturating_sub(6).min(14), inner.width);
+            cover_at = Some(Rect::new(inner.x, inner.y, cw, ch));
+            Rect { y: inner.y + ch + 1, height: inner.height.saturating_sub(ch + 1), ..inner }
+        }
+    } else {
+        inner
+    };
     let width = inner.width as usize;
 
     let mut lines: Vec<Line> = Vec::new();
@@ -401,6 +542,9 @@ fn draw_describe(f: &mut Frame, app: &mut App, area: Rect) {
     app.max_scroll = (lines.len() as u16).saturating_sub(h);
     app.scroll = app.scroll.min(app.max_scroll);
     f.render_widget(Paragraph::new(lines).scroll((app.scroll, 0)), inner);
+    if let Some(r) = cover_at {
+        draw_cover(f, CREDITS[i].slug, r);
+    }
     for (line, col, url) in link_lines {
         if line >= app.scroll && line - app.scroll < h {
             let w = (display_url(url).chars().count() as u16).min(inner.width.saturating_sub(col));
