@@ -93,6 +93,16 @@ fn start() -> io::Result<()> {
         }
     })?;
 
+    // Ratzilla listens for keys on the canvas itself, so give it focus now and whenever the
+    // tab regains focus; otherwise keys do nothing until the visitor clicks inside.
+    focus_canvas();
+    if let Some(w) = web_sys::window() {
+        use wasm_bindgen::JsCast;
+        let on_focus = wasm_bindgen::closure::Closure::<dyn FnMut()>::new(focus_canvas);
+        let _ = w.add_event_listener_with_callback("focus", on_focus.as_ref().unchecked_ref());
+        on_focus.forget();
+    }
+
     terminal.draw_web({
         let app = app.clone();
         move |f| ui::draw(f, &mut app.borrow_mut())
@@ -108,14 +118,22 @@ fn open_url(url: &str) {
     }
 }
 
-fn set_cursor(value: &str) {
-    use web_sys::{window, HtmlElement};
+fn canvas() -> Option<web_sys::HtmlElement> {
     use wasm_bindgen::JsCast;
-    let canvas = window()
+    web_sys::window()
         .and_then(|w| w.document())
         .and_then(|d| d.query_selector("canvas").ok().flatten())
-        .and_then(|el| el.dyn_into::<HtmlElement>().ok());
-    if let Some(c) = canvas {
+        .and_then(|el| el.dyn_into::<web_sys::HtmlElement>().ok())
+}
+
+fn focus_canvas() {
+    if let Some(c) = canvas() {
+        let _ = c.focus();
+    }
+}
+
+fn set_cursor(value: &str) {
+    if let Some(c) = canvas() {
         let _ = c.style().set_property("cursor", value);
     }
 }

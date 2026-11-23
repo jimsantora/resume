@@ -4,6 +4,7 @@ import Experience from '@/components/Experience';
 import { Hero, SiteHeader } from '@/components/Hero';
 import SiteFooter from '@/components/SiteFooter';
 import Skills from '@/components/Skills';
+import TerminalVersion from '@/components/TerminalVersion';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <Hero />
         <Experience />
         <Credits />
+        <TerminalVersion />
         <Skills />
         <About />
       </main>

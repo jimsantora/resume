@@ -56,7 +56,7 @@ export default function Experience() {
       <div className="divide-y divide-line border-y border-line">
         {earlier.map(job => (
           <details key={`${job.company}-${job.period}`} className="group py-5">
-            <summary className="flex cursor-pointer items-start gap-3">
+            <summary className="flex cursor-pointer items-start gap-3 rounded-sm hover:[&_h3]:text-aqua">
               <ChevronRight
                 className="mt-1.5 h-4 w-4 shrink-0 text-dim transition-transform group-open:rotate-90"
                 aria-hidden="true"

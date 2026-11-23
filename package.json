@@ -11,7 +11,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "tui:build": "cd tui && trunk build --release --public-url /resume/tui/ --dist ../public/tui",
+    "tui:content": "node scripts/gen-tui-content.cjs && python3 scripts/gen-tui-covers.py"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

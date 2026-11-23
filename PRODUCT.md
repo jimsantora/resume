@@ -19,7 +19,7 @@ A personal, public resume site for Jim Santora, a Staff Engineer (Platform & Sit
 
 ## Positioning
 
-An engineer's resume presented as a terminal session: the medium is the daily working environment of the subject. Backed by facts no other resume carries: credits on 15 shipped game titles (Fortnite, FIFA 17–22, Battlefield 2042, Madden, Need for Speed, Star Wars: Squadrons, Plants vs. Zombies) and infrastructure at 2K Games, Epic Games, Twitter, EA, CBS Interactive, and Right Media/Yahoo.
+A clean, readable engineer's resume first, with a k9s-style terminal version as an opt-in for those who seek it out (`/resume/tui/`, built in Rust with Ratatui/Ratzilla; SSH later). The main site keeps a light terminal accent (mono headings, orange and aqua) without terminal costume. Backed by facts no other resume carries: credits on 15 shipped game titles (Fortnite, FIFA 17–22, Battlefield 2042, Madden, Need for Speed, Star Wars: Squadrons, Plants vs. Zombies) and infrastructure at 2K Games, Epic Games, Twitter, EA, CBS Interactive, and Right Media/Yahoo.
 
 ## Operating Context
 
@@ -35,7 +35,7 @@ An engineer's resume presented as a terminal session: the medium is the daily wo
 
 ## Brand Commitments
 
-- Terminal-session theme is binding; the user wants it kept and potentially expanded.
+- The main site is a normal, readable resume; the terminal experience lives in the opt-in TUI. No fake shell commands or terminal chrome on the main site.
 - Public-safe personal detail only: **never publish a phone number or email address.** Contact routes are links only:
   - GitHub: https://github.com/jimsantora
   - LinkedIn: https://www.linkedin.com/in/jimsantora
