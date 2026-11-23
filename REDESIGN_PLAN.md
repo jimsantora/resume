@@ -24,6 +24,23 @@ Spike (`tui/`) results, served locally under `/resume/tui/` like GitHub Pages:
 - **WebGl2Backend** (current): pixel-clean borders and text, and supports clickable hyperlinks and mouse selection. Cost: **~1.09 MB gzipped** (likely the embedded font atlas). Investigate `FontAtlasConfig::dynamic(...)` for a smaller binary and a custom font. Hyperlink clicks are not tested yet.
 - Not yet deployed to real GitHub Pages. Pages deploys from `main` via `.github/workflows/deploy.yml`, so ask before changing that.
 
+## Step 1: the TUI app (built 2026-11-23, k9s-style)
+
+Lives in `tui/`. Run it locally: `cd tui && trunk serve --open`. Build for Pages: `trunk build --release --public-url /resume/tui/`.
+
+- `src/content.rs` is **generated** from `lib/resume.ts` by `node scripts/gen-tui-content.cjs` (needs `typescript` resolvable; locally `NODE_PATH=<main checkout>/node_modules`). It's committed so a Rust build doesn't need Node. Regenerate it after editing resume content.
+- `src/app.rs`: state, keys and clicks. No browser code, so it's reusable for SSH later. `src/ui.rs`: k9s rendering. `src/main.rs`: Ratzilla/WebGL wiring, font preload, link opening.
+- k9s look: the default k9s skin colours; an info header (orange labels) with `<n>` hotkeys (fuchsia) and an ASCII `jim` logo; a dodger-blue frame with a centred `view(scope)[count]` title; aqua rows with an inverse-aqua selection; a YAML-ish `describe(view/id)` view; orange/aqua crumbs.
+- Views: `<1>` experience (COMPANY/TITLE/FROM↓/TO/AGE/NOTES), `<2>` credits, `<3>` skills (describe shows "# used at …" derived from the job bullets), `<4>` about.
+- Mouse-first: click a row to describe it, click hotkeys and crumbs, click ▲/▼ on the frame to scroll (Ratzilla has no wheel event), and GitHub/LinkedIn are clickable links. Keys: 1–4, j/k/arrows, enter/d, esc/q, g/G, space/PgUp/PgDn.
+- Responsive: under 100 cols the logo drops; under 72 cols the header compacts to one hotkey row (`exp`), the columns trim and ids get shortened with "…"; under 24 rows the header hides.
+- Font: JetBrains Mono at 15px via the dynamic atlas (Google Fonts link in `tui/index.html`, awaited before init). The static default atlas lacked en/em dashes and arrows.
+- Links: Ratzilla's built-in hyperlink detection didn't fire with the dynamic atlas, so links are our own click regions (`Action::Link`) opened via `window.open`.
+- Verified in headless Chrome under `/resume/tui/`: all views, describe and scroll, row/link clicks (with the open captured), and the phone width (390px ≈ 43 cols).
+- Size: ~1.15 MB gzipped wasm. The default static atlas is still linked even though it's unused; look into trimming it.
+
+Next: step 3, the website around it (hero = this terminal in an iframe or a mounted canvas, plain-HTML resume below), then the deploy workflow (Rust + trunk step before `next build`), then SSH.
+
 ## Earlier status
 
 Jim liked C's readability (not its pastels or weak reference) and B's k9s recognisability (not its style). D (hybrid) was nice, but still not recognisable or engaging.
