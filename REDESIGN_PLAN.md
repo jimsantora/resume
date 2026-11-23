@@ -24,6 +24,21 @@ Spike (`tui/`) results, served locally under `/resume/tui/` like GitHub Pages:
 - **WebGl2Backend** (current): pixel-clean borders and text, and supports clickable hyperlinks and mouse selection. Cost: **~1.09 MB gzipped** (likely the embedded font atlas). Investigate `FontAtlasConfig::dynamic(...)` for a smaller binary and a custom font. Hyperlink clicks are not tested yet.
 - Not yet deployed to real GitHub Pages. Pages deploys from `main` via `.github/workflows/deploy.yml`, so ask before changing that.
 
+## Direction (2026-11-23, latest)
+
+Jim's call: the **main site is a refinement of the existing site** (normal, readable for non-technical visitors). The k9s TUI is opt-in: "Terminal version" in the header, a real-screenshot teaser in the hero, and a footer link, all to `/resume/tui/`. SSH comes later.
+
+Refinement done on this branch (Next.js, all server components, content from `lib/resume.ts`):
+- Removed the terminal costume: fake command headings, the `sudo shutdown` footer, CRT scanlines, the macOS window chrome and the typewriter name (the h1 was empty in the HTML).
+- Kept the identity: dark ink ground, JetBrains Mono for headings/labels, orange name and aqua accents (these echo the TUI's k9s skin). Body text is IBM Plex Sans for readability.
+- Hero: title, name, pitch, a Now/Since/Shipped strip, previous employers, GitHub/LinkedIn buttons, and the TUI teaser (`public/images/tui-preview.png`, a real 2x screenshot of the credits view).
+- Experience: roles from 2015 on shown in full; earlier roles are `<details>` one-liners. 2K Games is marked "Current role".
+- Credits: the cover grid with the title/year/role always visible (no hover-only captions).
+- Skills: icons kept via `lib/skillIcons.ts`. About: paragraphs plus focus chips.
+- Fixed the page title (was "James Santora") and the stale content (title, Epic dates, 2K).
+
+**Deploy TODO before merging:** the workflow must build the TUI into `out/tui/` (Rust + wasm32 target + trunk, `trunk build --release --public-url /resume/tui/ --dist ../out/tui` after `next build`), or the terminal links 404.
+
 ## Step 1: the TUI app (built 2026-11-23, k9s-style)
 
 Lives in `tui/`. Run it locally: `cd tui && trunk serve --open`. Build for Pages: `trunk build --release --public-url /resume/tui/`.

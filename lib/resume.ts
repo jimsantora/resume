@@ -1,5 +1,5 @@
-// Single source of truth for resume content. Components render from here;
-// the interactive prompt reads from here too.
+// Single source of truth for resume content. The website renders from here, and
+// scripts/gen-tui-content.cjs generates the TUI's content from it.
 
 export const profile = {
   name: 'Jim Santora',
@@ -210,32 +210,10 @@ export const credits: Credit[] = [
   credit('PLANTS VS ZOMBIES: GARDEN WARFARE 2', '2016', 'Tech Ops'),
 ];
 
-// tmux windows: id is the section anchor and the URL hash.
-export const windows = [
-  { id: 'whoami', label: 'whoami' },
-  { id: 'about', label: 'about' },
-  { id: 'skills', label: 'skills' },
-  { id: 'log', label: 'log' },
-  { id: 'credits', label: 'credits' },
-  { id: 'links', label: 'links' },
-] as const;
-
-export type WinId = (typeof windows)[number]['id'];
-
 /** Stable URL slug for a job, e.g. `epic-games-2022`. */
 export function jobSlug(job: Job): string {
   const company = job.company.split('/')[0].trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
   return `${company}-${job.period.match(/\d{4}/)?.[0] ?? ''}`;
-}
-
-// Deterministic short "commit hash" for display in git log output.
-export function shortHash(seed: string): string {
-  let h = 2166136261;
-  for (let i = 0; i < seed.length; i++) {
-    h ^= seed.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return (h >>> 0).toString(16).padStart(8, '0').slice(0, 7);
 }
 
 /** Title-case display for ALL-CAPS game titles, keeping known acronyms. */

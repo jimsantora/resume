@@ -1,21 +1,20 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono } from 'next/font/google';
+import { IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google';
+import { profile } from '@/lib/resume';
 import '@/styles/tailwind.css';
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
-});
+const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500', '700', '800'], variable: '--font-mono' });
+const sans = IBM_Plex_Sans({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'James Santora - Interactive Resume',
-  description: 'Written with assistance from Claude and Copilot',
+  title: `${profile.name} · ${profile.title}, ${profile.discipline}`,
+  description: profile.pitch,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${jetbrainsMono.variable} antialiased bg-[#0d1117]`}>{children}</body>
+    <html lang="en" className={`${mono.variable} ${sans.variable}`}>
+      <body className="bg-ink text-fg font-sans antialiased">{children}</body>
     </html>
   );
 }
