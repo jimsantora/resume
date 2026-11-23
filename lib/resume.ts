@@ -7,7 +7,7 @@ export const profile = {
   last: 'Santora',
   title: 'Staff Engineer',
   discipline: 'Platform & Site Reliability',
-  pitch: '20+ years leaving systems better than I found them, across gaming, media, and ad-tech.',
+  pitch: '25 years leaving systems better than I found them, across gaming, media, and ad-tech.',
   employers: ['2K Games', 'Epic Games', 'Twitter', 'Electronic Arts', 'CBS Interactive', 'Yahoo'],
   host: 'resume',
   user: 'jim',
@@ -19,10 +19,10 @@ export const links = {
 } as const;
 
 export const about: string[] = [
-  "I'm a platform and site reliability engineer with 20+ years of experience and a simple philosophy: leave every system better than you found it. I care deeply about the craft — not just keeping things running, but understanding why they break, building platforms that scale, and making the engineers around me more effective.",
-  "I've spent most of my career at the intersection of infrastructure and software, working across gaming, media, and ad-tech. The gaming industry in particular has shaped how I think about reliability — millions of players don't care about your deployment window, and neither does a live game launch. That pressure builds good instincts. I've been credited on 15 shipped titles and counting.",
-  "My technical range runs broad by design. I'm as comfortable reasoning about storage architecture or Kubernetes platform design as I am writing automation, reviewing code, or debugging a production incident at 2am. I gravitate toward problems that sit between teams — the ones nobody else owns — and I tend to leave behind tooling and standards that outlast my involvement.",
-  "Outside of work I run a homelab, follow the games industry closely, dabble in electronic music, and travel when I can. I've been an early and enthusiastic adopter of AI-assisted engineering — I build with Claude Code daily and believe agentic tooling is changing what it means to be a productive engineer.",
+  "I'm a platform and site reliability engineer. I care as much about why systems break as about keeping them up, and most of my time goes into building platforms that scale and tooling that makes the engineers around me faster.",
+  "Games have shaped how I think about reliability more than anything else. Millions of players don't care about your deployment window, and neither does a launch date. That pressure builds good instincts. I've been credited on 15 shipped titles and counting.",
+  "I'm as comfortable reasoning about storage architecture or Kubernetes platform design as I am writing automation, reviewing code, or working a production incident. I'm drawn to the problems that sit between teams, the ones nobody else owns, and I tend to leave behind tooling and standards that outlast my involvement.",
+  "Outside of work I run a homelab, follow the games industry closely, dabble in electronic music, and travel when I can. I build with Claude Code every day and teach other engineers to do the same; agentic tooling is changing what a productive engineer looks like.",
 ];
 
 export const specialties = [
@@ -79,13 +79,19 @@ export const jobs: Job[] = [
   {
     title: 'Staff DevOps Engineer',
     company: '2K Games',
-    period: 'Jun 2026 – present',
-    details: [],
+    period: '2026 – present',
+    details: [
+      'Rebuilt the shared GitHub Actions library that every tenant service on our platform builds with: split it into seven per-stack repos, introduced version pinning, automated releases, and Dependabot updates for callers, and moved 32 downstream repos (73 workflows) onto it.',
+      "Led zero-downtime migrations of live services onto 2K's new platform, a first for the platform; coordinated the database and Kubernetes teams, ran the readiness reviews and cutover decision calls, surfaced networking and database risks early, and wrote the tenant handoff docs.",
+      'Built an AI-assisted platform handbook (Claude Code skills and scripts feeding an Astro Starlight site) that compiles facts and sources from GitHub, Jira, Confluence, Spotify Portal, and AWS into onboarding docs, runbooks, a service and account inventory, and staleness grading of source docs; now used for new-hire onboarding and by other teams.',
+      'Started AI LevelUP, a bi-weekly series for Platform Engineering covering Claude Code, MCP servers, spec-driven design, and writing Claude skills; set up an internal plugin marketplace so engineers can share what they build.',
+      'Co-own the AWS DevOps Agent, now enabled on 32 services; designed a read-only MCP connector to Datadog backed by a dedicated service account, and a least-privilege access policy for engineers using the agent for incident response.',
+    ],
   },
   {
     title: 'Sr. Site Reliability Engineer',
     company: 'Epic Games',
-    period: '2022 – Jun 2026',
+    period: '2022 – 2026',
     details: [
       'Owned GitHub Enterprise Server internally, including autoscaling runners in EKS via Actions Runner Controller (ARC); designed custom dashboards surfacing service health, user experience, and usage hot spots down to the workflow level; built automation workflows for admin and governance tasks.',
       "Administered Epic's GitHub.com Enterprise accounts, including one of the largest private orgs on the platform (~500K members); managed licensing and cost optimization across internal and external GitHub instances.",
