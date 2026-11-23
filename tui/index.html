@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jim Santora · Resume TUI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=block">
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; outline: none; }
+  </style>
+  
+<script type="module">
+import init, * as bindings from '/resume/tui/resume-tui-fd0a9eadd65528cd.js';
+const wasm = await init({ module_or_path: '/resume/tui/resume-tui-e1a1ee5687382695_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+<link rel="modulepreload" href="/resume/tui/resume-tui-fd0a9eadd65528cd.js" crossorigin="anonymous" integrity="sha384-OR+muRH0j5+NWq5b2YkTIiUteayXlGno8aInMXSwDClNKB+ZD03V5fGyiL+GkdNU"><link rel="preload" href="/resume/tui/resume-tui-e1a1ee5687382695_bg.wasm" crossorigin="anonymous" integrity="sha384-9UD1QI3f6QcqvJdYnk3mAjttrnVDF0C93FvupIjszzU7oAcWRhbcfB8Dvu2NsghE" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>
