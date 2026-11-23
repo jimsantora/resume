@@ -135,3 +135,7 @@ dist
 
 # impeccable screenshots
 /.impeccable
+
+# Claude Code local-only files (.claude/CLAUDE.md is tracked)
+/.claude/worktrees/
+/.claude/settings.local.json

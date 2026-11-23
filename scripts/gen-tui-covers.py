@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Downsamples box art in public/images to small RGB pixel grids for the TUI.
+"""Downsamples box art in public/images to small pixel versions for the TUI and the site.
 
 The TUI draws them with half-block cells (one cell = two vertical pixels), so a
 36x48 cover is 36 columns x 24 rows at full size and scales down from there.
-Writes tui/assets/covers/<slug>.rgb and tui/src/covers.rs (include_bytes! table).
+Writes tui/assets/covers/<slug>.rgb and tui/src/covers.rs (include_bytes! table), plus
+public/images/px/<stem>.png (15x20) for the site's hero mosaic.
 
 Usage (from repo root): python3 scripts/gen-tui-covers.py   # needs Pillow
 """
@@ -16,6 +17,7 @@ W, H = 36, 48
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "public" / "images"
 OUT = ROOT / "tui" / "assets" / "covers"
+PX = SRC / "px"  # site hero mosaic, shown scaled up with image-rendering: pixelated
 
 
 def slug(stem: str) -> str:
@@ -25,10 +27,13 @@ def slug(stem: str) -> str:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    PX.mkdir(parents=True, exist_ok=True)
     arms = []
     for path in sorted(SRC.glob("*.jpg")):  # some are really WebP/PNG; Pillow sniffs the format
-        img = Image.open(path).convert("RGB")
-        img = img.resize((W, H), Image.LANCZOS)
+        src = Image.open(path).convert("RGB")
+        px = ImageEnhance.Color(src.resize((15, 20), Image.LANCZOS)).enhance(1.15)
+        px.save(PX / f"{path.stem}.png")
+        img = src.resize((W, H), Image.LANCZOS)
         # Tiny images lose punch; a touch of contrast/saturation keeps them readable as covers.
         img = ImageEnhance.Contrast(img).enhance(1.1)
         img = ImageEnhance.Color(img).enhance(1.15)
@@ -50,7 +55,7 @@ pub fn cover(slug: &str) -> Option<&'static [u8]> {{
 }}
 """
     (ROOT / "tui" / "src" / "covers.rs").write_text(rs)
-    print(f"wrote {len(arms)} covers at {W}x{H}")
+    print(f"wrote {len(arms)} covers at {W}x{H} and site mosaic images in {PX.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
