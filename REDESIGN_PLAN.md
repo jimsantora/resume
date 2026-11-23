@@ -1,6 +1,6 @@
 # Resume restart: TUI theme
 
-Status (2026-11-23): **waiting on Jim to pick a direction** from the prototypes.
+Status (2026-11-23): Jim liked C's readability (but not its pastels or its weak reference) and B's k9s recognisability (but not its style). Built **D: hybrid** (`prototypes/d-hybrid.html`), which is C's layout in k9s's marks with saturated night/day skins. Waiting on feedback.
 
 ## Context
 
