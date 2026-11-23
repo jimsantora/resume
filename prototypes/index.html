@@ -1,0 +1,47 @@
+<title>TUI Resume Prototypes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400&family=Geist+Mono:wght@400&display=swap">
+<style>
+/* Layout: one column, three rows, one per direction, each a link to its full-size prototype. */
+:root {
+  --bg: #f4f5f8; --fg: #1d2230; --dim: #687086; --line: #d5d9e3; --accent: #2a64d6;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0e1117; --fg: #dde1e8; --dim: #7a8296; --line: #2b3240; --accent: #7fb0ff; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #0e1117; --fg: #dde1e8; --dim: #7a8296; --line: #2b3240; --accent: #7fb0ff; color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.6 var(--mono); }
+main { max-width: 760px; margin: 0 auto; padding-block: 48px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 28px; }
+h1 { font-size: 18px; margin: 0; }
+p { margin: 0; max-width: 66ch; }
+.lead { color: var(--dim); }
+ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+li { border-bottom: 1px solid var(--line); }
+li a { display: grid; grid-template-columns: 3ch 1fr auto; gap: 4px 2ch; padding: 18px 0; color: inherit; text-decoration: none; }
+li a:hover .name, li a:focus-visible .name { color: var(--accent); }
+li a:focus-visible { outline: 1px dashed var(--accent); outline-offset: 4px; }
+.letter { color: var(--dim); }
+.name { font-weight: 700; }
+.ref { color: var(--dim); white-space: nowrap; }
+.what { grid-column: 2 / -1; color: var(--fg); }
+.ask { border-left: 2px solid var(--accent); padding-left: 2ch; }
+@media (max-width: 520px) { li a { grid-template-columns: 3ch 1fr; } .ref { grid-column: 2; } }
+</style>
+<main>
+  <div>
+    <h1>Resume restart: three TUI directions</h1>
+    <p class="lead">Each one uses the real resume content at full size. Click around and resize; they all work with the mouse, and keys are a bonus. No fake commands anywhere.</p>
+  </div>
+  <ol>
+    <li><a href="a-panels.html"><span class="letter">A</span><span class="name">Panels</span><span class="ref">after lazygit</span>
+      <span class="what">Numbered panels down the left (status, experience, skills, game credits), one detail pane on the right. Skills show which jobs used each tool. On a phone the detail opens under the panel you tapped.</span></a></li>
+    <li><a href="b-table.html"><span class="letter">B</span><span class="name">Table</span><span class="ref">after k9s</span>
+      <span class="what">Info header with the links up top, view hotkeys beside it, one big resource table. Click a row to describe it, breadcrumbs to go back. The most data-dense of the three.</span></a></li>
+    <li><a href="c-charm.html"><span class="letter">C</span><span class="name">Charm</span><span class="ref">after bubbletea</span>
+      <span class="what">Name badge, tabs joined to a rounded window, list with a selected-item bar and a detail box. The softest and roomiest, and the only one with a light mode.</span></a></li>
+  </ol>
+  <p class="ask">Which one is closest? It's fine to mix them, e.g. "B's header with C's colors", or to say what you like in lazygit, k9s or bubbletea that none of these got.</p>
+</main>
