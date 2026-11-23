@@ -13,6 +13,17 @@ Order: (1) build the TUI locally, then (3) the WASM spike, then (4) the website,
 
 Domain: not bought yet. Only step 2 needs it. Suggest something like a .dev/.com name via an at-cost registrar; GitHub Pages can use it too.
 
+## Framework decision and spike results (2026-11-23)
+
+Chose **Ratatui + Ratzilla (Rust)** over bubbletea: Ratzilla is built for the browser, while bubbletea-in-WASM is unofficial. SSH comes later via `russh`. Toolchain: rustup (stable 1.100.0) plus the `wasm32-unknown-unknown` target, and trunk 0.22.1 (prebuilt release, checksum verified, in `~/.cargo/bin`). Build with `trunk build --release --public-url /resume/tui/` from `tui/`.
+
+Spike (`tui/`) results, served locally under `/resume/tui/` like GitHub Pages:
+- Static output (index.html + .js + .wasm) works under the `/resume/tui/` base path, and `.wasm` is served as `application/wasm`. Pages needs nothing special.
+- **Keys:** Ratzilla listens on the focusable terminal element, not the document, so the site must auto-focus it or invite a click.
+- **DomBackend:** ~89 KB gzipped. Selectable text, but the borders render badly (dashed verticals, right edge short of the frame, corners missing) because of font-metric measurement. It might be fixable with a web font loaded before init and line-height tuning.
+- **WebGl2Backend** (current): pixel-clean borders and text, and supports clickable hyperlinks and mouse selection. Cost: **~1.09 MB gzipped** (likely the embedded font atlas). Investigate `FontAtlasConfig::dynamic(...)` for a smaller binary and a custom font. Hyperlink clicks are not tested yet.
+- Not yet deployed to real GitHub Pages. Pages deploys from `main` via `.github/workflows/deploy.yml`, so ask before changing that.
+
 ## Earlier status
 
 Jim liked C's readability (not its pastels or weak reference) and B's k9s recognisability (not its style). D (hybrid) was nice, but still not recognisable or engaging.
