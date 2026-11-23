@@ -81,11 +81,11 @@ export const jobs: Job[] = [
     company: '2K Games',
     period: '2026 – present',
     details: [
-      'Rebuilt the shared GitHub Actions library that every tenant service on our platform builds with: split it into seven per-stack repos, introduced version pinning, automated releases, and Dependabot updates for callers, and moved 32 downstream repos (73 workflows) onto it.',
-      "Led zero-downtime migrations of live services onto 2K's new platform, a first for the platform; coordinated the database and Kubernetes teams, ran the readiness reviews and cutover decision calls, surfaced networking and database risks early, and wrote the tenant handoff docs.",
-      'Built an AI-assisted platform handbook (Claude Code skills and scripts feeding an Astro Starlight site) that compiles facts and sources from GitHub, Jira, Confluence, Spotify Portal, and AWS into onboarding docs, runbooks, a service and account inventory, and staleness grading of source docs; now used for new-hire onboarding and by other teams.',
-      'Started AI LevelUP, a bi-weekly series for Platform Engineering covering Claude Code, MCP servers, spec-driven design, and writing Claude skills; set up an internal plugin marketplace so engineers can share what they build.',
-      'Co-own the AWS DevOps Agent, now enabled on 32 services; designed a read-only MCP connector to Datadog backed by a dedicated service account, and a least-privilege access policy for engineers using the agent for incident response.',
+      "Created and lead AI LevelUP, 2K Platform Engineering's AI training program: launched it for my team, expanded it across all of Platform Engineering within a month, and teach Claude Code, MCP servers, spec-driven design, and skill authoring to 25+ engineers live and async. Built the internal plugin marketplace where engineers now publish skills of their own.",
+      "Led the first zero-downtime migrations onto 2K's new platform: went from learning the process to migrating a live service solo in my second month, then led a cross-team re-migration on a compressed timeline that succeeded on the first attempt.",
+      'Built the platform handbook that became its single source of truth: an AI-powered system that compiles facts from GitHub, Jira, Confluence, Spotify Portal, and AWS into onboarding guides, runbooks, and a full inventory of accounts, clusters, and services, and grades every source for staleness. New engineers onboard with it; managers and partner teams rely on it.',
+      "Leading 2K's adoption of the AWS DevOps Agent, an AI incident-response tool now running across 32 services; authored the two approved designs that connect it to Datadog through a purpose-built read-only integration and lock it down with least-privilege access.",
+      "Drive standards across Platform Engineering's four teams: authored a governance proposal that unifies three teams' parallel efforts into one policy set, enforced in EKS and validated in CI, and serve as the technical interviewer for Staff-level platform hires.",
     ],
   },
   {
