@@ -1,0 +1,15 @@
+[package]
+name = "resume-tui"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Step 1 spike: prove a Ratzilla app builds and runs from GitHub Pages under /resume/.
+[dependencies]
+ratzilla = "0.3.1"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
